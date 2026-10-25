@@ -111,3 +111,42 @@
     size: auto;
   }
 }
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .receipt-sheet, .receipt-sheet * {
+    visibility: visible;
+  }
+
+  .receipt-sheet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5cm;
+    background: #FFFFFF !important;
+  }
+
+  .receipt-sheet::before {
+    display: none;
+  }
+
+  .receipt-actions {
+    display: none !important;
+  }
+
+  .receipt-table tbody tr:nth-child(even) {
+    background: transparent !important;
+  }
+
+  .receipt-table thead th,
+  .receipt-total-line {
+    border-color: #000 !important;
+  }
+
+  .receipt-title, .receipt-total-line span:last-child {
+    color: #000 !important;
+  }
+}

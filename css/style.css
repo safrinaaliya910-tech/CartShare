@@ -1640,3 +1640,140 @@ footer.footer-ledger {
   flex-shrink: 0;
   margin-top: 0;
 }
+/* ═════════════════════════════════════════════════════════════════════════
+   RECEIPT MODAL — neat printed-slip table styling
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.receipt-sheet {
+  background: var(--paper-white);
+  padding: 2rem 1.75rem 1.5rem;
+  position: relative;
+}
+
+.receipt-sheet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, transparent, transparent 6px, var(--cream-light) 6px, var(--cream-light) 12px);
+}
+
+.receipt-header {
+  text-align: center;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px dashed var(--latte);
+}
+
+.receipt-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--burgundy-dark);
+  margin-bottom: 0.4rem;
+}
+
+.receipt-meta {
+  font-size: 0.82rem;
+  color: var(--concrete);
+  line-height: 1.6;
+}
+
+/* ---------- The actual table ---------- */
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.25rem;
+  font-size: 0.88rem;
+}
+
+.receipt-table thead th {
+  text-align: left;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--concrete);
+  font-weight: 700;
+  padding: 0 0 0.6rem;
+  border-bottom: 2px solid var(--burgundy);
+}
+
+.receipt-table tbody td {
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--latte);
+  vertical-align: top;
+  color: var(--ink);
+}
+
+.receipt-table tbody tr:last-child td {
+  border-bottom: 2px solid var(--latte);
+}
+
+.receipt-table tbody tr:nth-child(even) {
+  background: rgba(183, 171, 154, 0.08);
+}
+
+.receipt-table tbody td:nth-child(2),
+.receipt-table thead th:nth-child(2) {
+  text-align: right;
+}
+
+.receipt-table tbody td:nth-child(3),
+.receipt-table thead th:nth-child(3) {
+  text-align: center;
+}
+
+.receipt-table tbody td:nth-child(4),
+.receipt-table thead th:nth-child(4) {
+  text-align: right;
+  font-weight: 700;
+  color: var(--burgundy-dark);
+}
+
+/* ---------- Summary lines (subtotal / delivery / total) ---------- */
+.receipt-summary-lines {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--latte);
+}
+
+.receipt-summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.receipt-total-line {
+  margin-top: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid var(--burgundy);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.receipt-total-line span:first-child {
+  color: var(--ink);
+}
+
+.receipt-disclaimer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--concrete);
+  line-height: 1.7;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 2px dashed var(--latte);
+}
+
+
+#receiptModalBody {
+  padding: 0 !important;
+}
+
+#receiptModal .modal-content {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
