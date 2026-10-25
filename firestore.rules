@@ -1,0 +1,147 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Helpers ----------
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Member BEFORE this write
+    function isMember(roomId) {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/rooms/$(roomId)/members/$(request.auth.uid));
+    }
+
+    // Member AFTER this write (needed when create/join happen in one batch)
+    function isMemberAfter(roomId) {
+      return isSignedIn() &&
+        existsAfter(/databases/$(database)/documents/rooms/$(roomId)/members/$(request.auth.uid));
+    }
+
+    function isRoomOwner(roomId) {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/rooms/$(roomId)).data.ownerUid == request.auth.uid;
+    }
+
+    function isRoomOpen(roomId) {
+      return get(/databases/$(database)/documents/rooms/$(roomId)).data.status == 'open';
+    }
+
+    // ---------- 1. Users ----------
+    match /users/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
+
+      match /rooms/{roomId} {
+        allow read, write: if isSignedIn() && request.auth.uid == uid;
+      }
+    }
+
+    // ---------- 2. Invite codes ----------
+    match /roomCodes/{code} {
+      allow get: if isSignedIn();
+      allow list: if false;
+
+      allow create: if isSignedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.status == 'open'
+        && request.resource.data.roomId is string;
+
+      allow update: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+      allow delete: if false;
+    }
+
+    // ---------- 3. Rooms ----------
+    match /rooms/{roomId} {
+
+      // Room IDs are long random strings; signed-in users may fetch one by ID
+      // (needed during the join flow). Listing all rooms is blocked.
+      allow get: if isSignedIn();
+      allow list: if false;
+
+      allow create: if isSignedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.status == 'open'
+        && request.resource.data.memberCount >= 1;
+
+      allow update: if isSignedIn() && (
+        isRoomOwner(roomId) ||
+        (
+          (isMember(roomId) || isMemberAfter(roomId)) &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['subtotal', 'itemCount', 'memberCount', 'updatedAt', 'lastActivityAt']) &&
+          request.resource.data.subtotal >= 0 &&
+          request.resource.data.itemCount >= 0 &&
+          request.resource.data.memberCount >= 1
+        )
+      );
+
+      allow delete: if false;
+
+      // ----- Members -----
+      match /members/{memberUid} {
+        allow read: if isSignedIn() &&
+          (request.auth.uid == memberUid || isMember(roomId) || isRoomOwner(roomId));
+
+        allow create: if isSignedIn() && request.auth.uid == memberUid && (
+          request.resource.data.role == 'owner' ||
+          (request.resource.data.role == 'member' && isRoomOpen(roomId))
+        );
+
+        allow delete: if isSignedIn() &&
+          (request.auth.uid == memberUid || isRoomOwner(roomId));
+
+        allow update: if false;
+      }
+
+      // ----- Items (shared cart) -----
+      match /items/{productId} {
+        allow read: if isMember(roomId);
+
+        allow create: if isMember(roomId)
+          && isRoomOpen(roomId)
+          && request.resource.data.unitPrice is number
+          && request.resource.data.unitPrice >= 0
+          && request.resource.data.totalQty is int
+          && request.resource.data.totalQty >= 1
+          && request.resource.data.totalQty <= 500
+          && request.resource.data.contributions is map
+          && request.resource.data.contributions.keys().hasOnly([request.auth.uid]);
+
+        allow update: if isMember(roomId)
+          && isRoomOpen(roomId)
+          && request.resource.data.unitPrice is number
+          && request.resource.data.unitPrice >= 0
+          && request.resource.data.totalQty is int
+          && request.resource.data.totalQty >= 1
+          && request.resource.data.totalQty <= 500
+          && request.resource.data.contributions is map
+          && request.resource.data.contributions.diff(resource.data.contributions)
+               .affectedKeys().hasOnly([request.auth.uid]);
+
+        allow delete: if isMember(roomId) && (
+          resource.data.contributions.keys().hasOnly([request.auth.uid]) ||
+          !resource.data.contributions.keys().hasAny([request.auth.uid]) ||
+          isRoomOwner(roomId)
+        );
+      }
+
+      // ----- Activity -----
+      match /activity/{activityId} {
+        allow read: if isMember(roomId);
+
+        allow create: if (isMember(roomId) || isMemberAfter(roomId))
+          && request.resource.data.actorUid == request.auth.uid
+          && request.resource.data.createdAt == request.time;
+
+        allow update, delete: if false;
+      }
+    }
+
+    // ---------- Default deny ----------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

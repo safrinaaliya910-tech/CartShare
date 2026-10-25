@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CartShare — The Market, Together.</title>
+  <meta name="description" content="Shop the grocery market together in real time. Shared baskets, invite codes, delivery runways, and fair share ledgers for roommates and families.">
+  <meta property="og:title" content="CartShare — The Market, Together.">
+  <meta property="og:description" content="Real-time group grocery shopping with one unified basket and fair-share ledger.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+  <header class="market-navbar">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="brand-mark">
+        <span class="brand-icon-box">
+          <img src="assets/images/logo.svg" alt="" width="22" height="22">
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">CartShare</span>
+          <span class="brand-badge">THE LIVING MARKET</span>
+        </span>
+      </a>
+
+      <!-- Guest vs User Navbar actions -->
+      <nav class="d-flex align-items-center gap-2">
+        <div id="navGuestActions" class="d-flex align-items-center gap-2">
+          <a href="login.html" class="nav-link-custom">Sign In</a>
+          <a href="register.html" class="btn btn-burgundy btn-sm font-mono btn-magnetic">Get Started</a>
+        </div>
+        <div id="navUserActions" class="d-none d-flex align-items-center gap-2">
+          <a href="dashboard.html" class="btn btn-burgundy btn-sm font-mono btn-magnetic">
+            <i class="bi bi-shop me-1"></i> Market Desk (<span id="navUserBadge"></span>)
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+       <!-- 1. Full Viewport Hero Section with Kinetic Headline & Layered Cutout Frames -->
+    <section class="min-vh-100 d-flex align-items-center position-relative py-5 overflow-hidden" style="background: radial-gradient(circle at 80% 20%, rgba(242, 177, 52, 0.12) 0%, transparent 60%);">
+      <div class="container py-4">
+        <div class="row align-items-center hero-split">
+          
+          <!-- Hero Copy Left -->
+          <div class="col-lg-7 mb-5 mb-lg-0 pe-lg-4">
+            <div class="d-inline-flex align-items-center gap-2 mb-3">
+              <span class="stamp-badge stamp-marigold">
+                <i class="bi bi-stars"></i> REAL-TIME GROUP SHOPPING
+              </span>
+              <span class="stamp-badge stamp-sage">NO SPREADSHEETS</span>
+            </div>
+
+            <!-- Kinetic Headline with Mixed Roman & Italic Text -->
+            <h1 class="display-title font-display text-burgundy-dark mb-4" style="font-size: clamp(3.2rem, 7.8vw, 7rem); line-height: 0.98; letter-spacing: -0.04em;">
+              Shop the market.<br>
+              <span class="text-outline-burgundy">Together</span> in <em class="text-tomato" style="font-style: italic;">sync.</em>
+            </h1>
+
+            <p class="text-ink fs-5 mb-4" style="max-width: 560px; line-height: 1.6;">
+              Hostel roommates, collective flats, and families: fill <strong>one consolidated basket</strong> in real time from different phones, watch the delivery threshold fill live, and print a clean shopping summary.
+            </p>
+
+            <div class="d-flex align-items-center flex-wrap gap-3 mb-5">
+              <a href="register.html" class="btn btn-burgundy btn-magnetic px-4 py-3 fs-5">
+                Open a Market Room <i class="bi bi-arrow-right ms-2"></i>
+              </a>
+              <a href="#interactiveDemo" class="btn btn-outline-burgundy btn-magnetic px-4 py-3 fs-5">
+                <i class="bi bi-play-circle me-1 text-tomato"></i> Try Live Demo
+              </a>
+            </div>
+
+            <!-- Icon Feature Strip -->
+            <div class="hero-feature-strip">
+              <div class="hero-feature-item">
+                <span class="hero-feature-icon"><i class="bi bi-people-fill"></i></span>
+                <span>Live shared basket</span>
+              </div>
+              <div class="hero-feature-item">
+                <span class="hero-feature-icon"><i class="bi bi-journal-text"></i></span>
+                <span>No spreadsheets</span>
+              </div>
+              <div class="hero-feature-item">
+                <span class="hero-feature-icon"><i class="bi bi-truck"></i></span>
+                <span>Delivery threshold tracker</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Right Collage with Parallax & Rotating Badge -->
+          <div class="col-lg-5 hero-collage-wrap position-relative">
+            
+            <!-- Rotating Text Badge -->
+                       <div class="rotating-badge-wrap position-absolute" style="top: -78px; right: 0; z-index: 10;">
+              <svg class="rotating-text-svg" viewBox="0 0 100 100">
+                <path id="circlePath" fill="none" stroke="none" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                <text font-family="'DM Mono', monospace" font-size="8.8" font-weight="700" fill="#722F37" letter-spacing="1.2">
+                  <textPath href="#circlePath" startOffset="0%">
+                    SHOP TOGETHER • SHARE ONE BASKET •
+                  </textPath>
+                </text>
+              </svg>
+              <div class="rotating-badge-center">
+                <i class="bi bi-basket2-fill"></i>
+              </div>
+            </div>
+
+            <!-- Layered Cutout Frames with clip-path -->
+            <div class="position-relative p-2">
+              
+              <!-- Arch photo (Main) -->
+              <div class="tilt-card frame-arch shadow-dramatic border border-2 border-dark overflow-hidden mb-3 parallax-float" data-speed="14" style="height: 340px; background: #000;">
+                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Fresh market vegetables" class="w-100 h-100 object-fit-cover ken-burns-img">
+              </div>
+
+              <!-- Floating Notch photo -->
+              <div class="position-absolute frame-notch shadow-tactile border border-2 border-dark overflow-hidden parallax-float" data-speed="-18" style="bottom: 10px; left: -25px; width: 170px; height: 170px; z-index: 6; background: #FFF;">
+                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80" alt="Artisan pav buns" class="w-100 h-100 object-fit-cover">
+              </div>
+
+              <!-- Floating "Shared Basket" preview card -->
+              <div class="hero-float-card hero-basket-card tilt-card parallax-float" data-speed="10">
+                <div class="hero-basket-top">
+                  <span class="hero-basket-icon"><i class="bi bi-basket2-fill"></i></span>
+                  <div class="hero-basket-text">
+                    <strong>Shared Basket</strong>
+                    <span class="font-mono">12 items · ₹684</span>
+                  </div>
+                </div>
+                <div class="hero-basket-thumbs">
+                                    <img src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=100&q=60" alt="Tomatoes" onerror="this.src='https://images.unsplash.com/photo-1561136594-7f68413baa99?auto=format&fit=crop&w=100&q=60'">
+                                    <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=100&q=60" alt="Bananas" onerror="this.style.display='none'">
+                  <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=100&q=60" alt="Milk" onerror="this.style.display='none'">
+                  <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=100&q=60" alt="Bread" onerror="this.style.display='none'">
+                  <span class="hero-basket-arrow"><i class="bi bi-chevron-right"></i></span>
+                </div>
+              </div>
+
+              <!-- Upgraded Room Ticket: code + live shoppers -->
+              <div class="hero-float-card hero-room-card tilt-card" id="sampleInviteTicket" style="cursor: pointer;" title="Click to copy sample code">
+                <div class="hero-room-top">
+                  <span class="hero-room-icon"><i class="bi bi-house-door-fill"></i></span>
+                  <div class="hero-room-label-wrap">
+                    <span class="hero-room-label">ROOM</span>
+                    <span class="hero-room-live"><span class="hero-live-dot"></span>LIVE</span>
+                  </div>
+                </div>
+                <div class="hero-room-code font-mono">CS-7K29</div>
+                <div class="hero-room-sub">Hostel Block 4</div>
+                <div class="hero-room-shoppers">
+                  <span class="hero-mini-avatar" style="background:#722F37;">A</span>
+                  <span class="hero-mini-avatar" style="background:#58714A;">R</span>
+                  <span class="hero-mini-avatar" style="background:#C68200;">S</span>
+                  <span class="hero-mini-avatar hero-mini-avatar-more">+1</span>
+                  <span class="hero-room-active">4 shoppers active</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Infinite Scrolling Marquee Strip (standalone band, separated from the demo) -->
+    <section class="marquee-section" aria-label="Featured market goods">
+      <div class="marquee-strip">
+        <div class="marquee-track">
+          <span class="marquee-item">Alphonso Mangoes <span class="marquee-dot"></span></span>
+          <span class="marquee-item text-outline-cream">Organic A2 Milk <span class="marquee-dot"></span></span>
+          <span class="marquee-item">Artisan Sourdough <span class="marquee-dot"></span></span>
+          <span class="marquee-item text-outline-cream">Kashmiri Saffron <span class="marquee-dot"></span></span>
+          <span class="marquee-item">Robusta Bananas <span class="marquee-dot"></span></span>
+          <span class="marquee-item text-outline-cream">Single-Estate Assam Tea <span class="marquee-dot"></span></span>
+          <!-- Duplicated for seamless infinite loop -->
+          <span class="marquee-item">Alphonso Mangoes <span class="marquee-dot"></span></span>
+          <span class="marquee-item text-outline-cream">Organic A2 Milk <span class="marquee-dot"></span></span>
+          <span class="marquee-item">Artisan Sourdough <span class="marquee-dot"></span></span>
+          <span class="marquee-item text-outline-cream">Kashmiri Saffron <span class="marquee-dot"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. INTERACTIVE LIVE DEMO SECTION -->
+    <section class="demo-section section-midnight position-relative" id="interactiveDemo">
+      <div class="container">
+        
+        <!-- Section header -->
+        <div class="demo-header">
+          <div>
+            <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+              <span class="stamp-badge stamp-marigold">TRY IT NOW • NO SIGN-UP</span>
+              <span class="badge bg-danger font-mono">LIVE DEMO</span>
+            </div>
+            <h2 class="font-display text-white fs-1 mb-0">Experience The Shared Basket</h2>
+          </div>
+          <p class="demo-header-desc">
+            Click any stall item to add it to the demo basket. Watch the Delivery Runway fill and the Fair Share Ledger balance in real time.
+          </p>
+        </div>
+
+        <div class="row g-4 g-xl-5 align-items-start">
+          <!-- Left: 6 Interactive Demo Products -->
+          <div class="col-lg-7">
+            <div class="demo-panel-head">
+              <h4 class="font-display text-white mb-0 fs-5"><i class="bi bi-shop me-2 text-marigold"></i>Demo Stalls</h4>
+              <button type="button" class="btn btn-sm btn-outline-light font-mono" id="demoResetBtn">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Demo
+              </button>
+            </div>
+
+            <!-- Who is adding? Drives the Fair Share Ledger -->
+            <div class="demo-member-picker" id="demoMemberPicker">
+              <span class="demo-member-label">Adding as:</span>
+              <button type="button" class="demo-member-chip active" data-member="you"><span class="demo-member-dot" style="background:#722F37;"></span>You</button>
+              <button type="button" class="demo-member-chip" data-member="rohan"><span class="demo-member-dot" style="background:#6F8460;"></span>Rohan</button>
+              <button type="button" class="demo-member-chip" data-member="aarti"><span class="demo-member-dot" style="background:#C68200;"></span>Aarti</button>
+            </div>
+
+            <div class="row g-3" id="demoProductsGrid">
+              <!-- Demo products rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Right: Live Interactive Basket, Runway & Ledger -->
+          <div class="col-lg-5">
+            <div class="demo-basket paper-card position-relative" id="demoBasketCard">
+              
+              <div class="demo-basket-head">
+                <div>
+                  <span class="stamp-badge mb-2">DEMO ROOM: HOSTEL C</span>
+                  <h4 class="font-display text-burgundy-dark mb-0 fs-4">The Live Basket</h4>
+                </div>
+                <span class="badge bg-dark font-mono fs-6" id="demoCartCount">0 Items</span>
+              </div>
+
+              <!-- Demo Runway -->
+              <div class="demo-runway-box">
+                <div class="demo-runway-row">
+                  <span class="font-mono small"><i class="bi bi-bicycle text-burgundy me-1"></i> Delivery Runway</span>
+                  <span id="demoRunwayStatus" class="fw-bold text-burgundy font-mono small">Goal: ₹500</span>
+                </div>
+                
+                <div class="runway-track-wrap" style="height: 26px;">
+                  <div class="runway-fill" id="demoRunwayFill" style="width: 0%;"></div>
+                  <div class="runway-marker" id="demoRunwayMarker" style="left: 0%;"><i class="bi bi-basket2"></i></div>
+                  <span class="runway-tick-line" style="left: 50%"></span>
+                  <span class="runway-tick" style="left: 50%">50%</span>
+                  <span class="runway-tick-line" style="left: 100%"></span>
+                  <span class="runway-tick" style="left: 100%"><i class="bi bi-flag-fill text-burgundy"></i></span>
+                </div>
+
+                <div class="demo-runway-meta">
+                  <span class="font-mono small">Subtotal: <strong class="fs-5 text-burgundy-dark" id="demoSubtotal">₹0</strong></span>
+                </div>
+                <div id="demoRunwayRemaining" class="demo-runway-msg">₹500 more for free delivery</div>
+              </div>
+
+              <!-- Demo Cart Items -->
+              <div class="mb-4">
+                <div class="demo-section-label">Consolidated Basket</div>
+                <div id="demoCartList" class="demo-cart-list">
+                  <p class="text-muted font-mono small text-center py-3 mb-0">No items yet. Click products on the left!</p>
+                </div>
+              </div>
+
+              <!-- Demo Fair Share Ledger -->
+              <div class="demo-ledger">
+                <div class="d-flex justify-content-between align-items-center mb-3 font-mono small">
+                  <span class="fw-bold text-uppercase"><i class="bi bi-pie-chart text-burgundy me-1"></i> Fair Share Ledger</span>
+                  <span class="text-sage fw-bold">3 Roommates</span>
+                </div>
+                <div id="demoLedgerBars">
+                  <!-- Populated by demo script -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. Pinned/Sticky Scroll Storytelling: "How It Works" -->
+    <section class="py-5 section-paper" id="howItWorks">
+      <div class="container py-4">
+        
+        <div class="text-center mb-5">
+          <span class="stamp-badge mb-2">FRICTIONLESS GROUP WORKFLOW</span>
+          <h2 class="font-display text-burgundy-dark display-5">How CartShare Works</h2>
+          <p class="text-ink fs-5" style="max-width: 540px; margin: 0 auto;">No separate orders, no chaotic chat screenshots, no manual calculations.</p>
+        </div>
+
+        <div class="row g-4">
+          <!-- Step 01 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="paper-card p-4 h-100 tilt-card" style="border-top: 4px solid var(--burgundy);">
+              <div class="font-mono text-burgundy fw-bold fs-1 mb-2">01</div>
+              <h4 class="font-display text-burgundy-dark mb-2">Open Room</h4>
+              <p class="text-ink small mb-0">Create your private shopping room. Define an optional group delivery threshold in rupees.</p>
+            </div>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="paper-card p-4 h-100 tilt-card" style="border-top: 4px solid var(--accent-marigold);">
+              <div class="font-mono text-marigold fw-bold fs-1 mb-2">02</div>
+              <h4 class="font-display text-burgundy-dark mb-2">Invite Shoppers</h4>
+              <p class="text-ink small mb-0">Share your stamped 4-letter room ticket (e.g. <code>CS-7K29</code>) with roommates or family.</p>
+            </div>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="paper-card p-4 h-100 tilt-card" style="border-top: 4px solid var(--sage-dark);">
+              <div class="font-mono text-sage fw-bold fs-1 mb-2">03</div>
+              <h4 class="font-display text-burgundy-dark mb-2">Fill One Basket</h4>
+              <p class="text-ink small mb-0">Everyone adds provisions from their own devices. Smart Merge combines identical items.</p>
+            </div>
+          </div>
+
+          <!-- Step 04 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="paper-card p-4 h-100 tilt-card" style="border-top: 4px solid var(--accent-tomato);">
+              <div class="font-mono text-tomato fw-bold fs-1 mb-2">04</div>
+              <h4 class="font-display text-burgundy-dark mb-2">Print Receipt</h4>
+              <p class="text-ink small mb-0">One member places the final order and prints a clean summary with individual shares.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. Signature Features: 3 Large Immersive Panels -->
+    <section class="py-5">
+      <div class="container py-4">
+        
+        <!-- Feature 1: The Delivery Runway -->
+        <div class="paper-card p-4 p-lg-5 mb-5 overflow-hidden" style="border-left: 8px solid var(--burgundy);">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0 pe-lg-4">
+              <span class="stamp-badge mb-2">SIGNATURE INNOVATION 01</span>
+              <h3 class="font-display text-burgundy-dark fs-1 mb-3">The Delivery Runway</h3>
+              <p class="text-ink fs-5">
+                Stop paying delivery surcharges because nobody knew the basket total. The Delivery Runway tracks group progress along a calibrated ruler road.
+              </p>
+              <ul class="list-unstyled font-mono small text-ink mb-0">
+                <li class="mb-2"><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Travelling road marker with real-time percentage ticks</li>
+                <li class="mb-2"><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>"Fits the gap" suggestions to hit the exact target</li>
+                <li><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Slammed "TARGET REACHED" badge once threshold is unlocked</li>
+              </ul>
+            </div>
+            <div class="col-lg-6">
+              <div class="p-4 rounded shadow-tactile" style="background: var(--cream-light); border: 2px solid var(--latte);">
+                <div class="d-flex justify-content-between font-mono small mb-2">
+                  <span>Room Delivery Target: ₹500</span>
+                  <span class="text-sage fw-bold">₹420 in Basket (84%)</span>
+                </div>
+                <div class="runway-track-wrap my-3" style="height: 32px;">
+                  <div class="runway-fill" style="width: 84%;"></div>
+                  <div class="runway-marker" style="left: 84%;"><i class="bi bi-basket2"></i></div>
+                  <span class="runway-tick-line" style="left: 25%"></span>
+                  <span class="runway-tick" style="left: 25%">25%</span>
+                  <span class="runway-tick-line" style="left: 50%"></span>
+                  <span class="runway-tick" style="left: 50%">50%</span>
+                  <span class="runway-tick-line" style="left: 75%"></span>
+                  <span class="runway-tick" style="left: 75%">75%</span>
+                  <span class="runway-tick-line" style="left: 100%"></span>
+                  <span class="runway-tick" style="left: 100%"><i class="bi bi-flag-fill text-burgundy"></i></span>
+                </div>
+                <div class="p-2 bg-white rounded border font-mono small d-flex justify-content-between align-items-center">
+                  <span>Suggested Gap Item: <strong>Nashik Onions (₹80)</strong></span>
+                  <span class="badge bg-success font-mono">+ Hits ₹500 Target</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2: Fair Share Ledger -->
+        <div class="paper-card p-4 p-lg-5 mb-5 overflow-hidden" style="border-left: 8px solid var(--sage-dark);">
+          <div class="row align-items-center flex-lg-row-reverse">
+            <div class="col-lg-6 mb-4 mb-lg-0 ps-lg-4">
+              <span class="stamp-badge stamp-sage mb-2">SIGNATURE INNOVATION 02</span>
+              <h3 class="font-display text-burgundy-dark fs-1 mb-3">Fair Share Ledger</h3>
+              <p class="text-ink fs-5">
+                No awkward post-order math or calculator apps. The Fair Share Ledger continuously calculates each person's exact items, rupee amount, and percentage share.
+              </p>
+              <ul class="list-unstyled font-mono small text-ink mb-0">
+                <li class="mb-2"><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Mathematically reconciled against live Firestore snapshots</li>
+                <li class="mb-2"><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Colour-coded proportional member share bars</li>
+                <li><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Clear disclaimer: contribution values, not debt obligations</li>
+              </ul>
+            </div>
+            <div class="col-lg-6">
+              <div class="p-4 rounded shadow-tactile bg-white border border-2 border-dark border-opacity-10">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="font-mono small text-concrete text-uppercase">Live Member Ledger</span>
+                  <span class="stamp-badge stamp-sage">RECONCILED</span>
+                </div>
+                <div class="border-bottom pb-2 mb-2 d-flex justify-content-between align-items-center font-mono">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-circle" style="background:#722F37;">AK</span>
+                    <span>Asha K. (Host)</span>
+                  </div>
+                  <div><strong>₹275</strong> <span class="small text-concrete">(55%)</span></div>
+                </div>
+                <div class="border-bottom pb-2 mb-2 d-flex justify-content-between align-items-center font-mono">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-circle" style="background:#6F8460;">RM</span>
+                    <span>Rohan M.</span>
+                  </div>
+                  <div><strong>₹145</strong> <span class="small text-concrete">(29%)</span></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center font-mono">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-circle" style="background:#8C5E3C;">SV</span>
+                    <span>Sneha V.</span>
+                  </div>
+                  <div><strong>₹80</strong> <span class="small text-concrete">(16%)</span></div>
+                </div>
+                <div class="mt-3 pt-2 border-top d-flex justify-content-between font-mono fw-bold text-burgundy-dark fs-5">
+                  <span>Group Subtotal:</span>
+                  <span>₹500</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3: Smart Merge -->
+        <div class="paper-card p-4 p-lg-5 overflow-hidden" style="border-left: 8px solid var(--accent-marigold);">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0 pe-lg-4">
+              <span class="stamp-badge stamp-marigold mb-2">SIGNATURE INNOVATION 03</span>
+              <h3 class="font-display text-burgundy-dark fs-1 mb-3">Smart Merge & Duplicate Guard</h3>
+              <p class="text-ink fs-5">
+                When two people both want milk or bread, CartShare automatically consolidates them into a single line item while isolating individual steppers.
+              </p>
+              <ul class="list-unstyled font-mono small text-ink mb-0">
+                <li class="mb-2"><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Single consolidated line item in shared cart</li>
+                <li class="mb-2"><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Personal steppers change only your quantity</li>
+                <li><i class="bi bi-check2-circle text-sage fw-bold me-2 fs-6"></i>Per-member quota cap (max 20 units per shopper)</li>
+              </ul>
+            </div>
+            <div class="col-lg-6">
+              <div class="p-4 rounded shadow-tactile bg-white border border-2 border-dark border-opacity-10">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="stamp-badge stamp-marigold">SMART MERGED LINE</span>
+                  <span class="font-mono small text-concrete">Line Total: ₹170</span>
+                </div>
+                <div class="p-3 bg-light border rounded">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 class="mb-1 text-ink font-display">Farm Fresh A2 Cow Milk</h5>
+                      <span class="font-mono text-muted small">₹85 / 1 Litre</span>
+                    </div>
+                    <div class="font-mono fw-bold fs-4 text-burgundy">Qty: 2</div>
+                  </div>
+                  <div class="mt-2 pt-2 border-top border-dashed font-mono text-concrete small">
+                    Contributions: <strong class="text-ink">You: 1</strong> · <strong class="text-ink">Rohan: 1</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. Giant Typography Full-Bleed CTA -->
+    <section class="py-5 section-midnight position-relative overflow-hidden">
+      <div class="container text-center py-5 position-relative" style="z-index: 2;">
+        <span class="stamp-badge stamp-marigold mb-3">GET STARTED IN 30 SECONDS</span>
+        <h2 class="font-display text-white mb-4" style="font-size: clamp(2.8rem, 7vw, 5.5rem); line-height: 1.05;">
+          Ready to shop the market <em class="text-marigold">together?</em>
+        </h2>
+        <p class="text-cream fs-5 mb-5" style="max-width: 580px; margin: 0 auto; opacity: 0.9;">
+          Open your first group room, share the invite code with your flat, and never duplicate an order again.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="register.html" class="btn btn-marigold btn-magnetic px-5 py-3 fs-5 fw-bold">
+            Open a Free Room <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+          <a href="login.html" class="btn btn-outline-light btn-magnetic px-4 py-3 fs-5">
+            Sign In to Desk
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Refined Footer -->
+  <footer class="footer-ledger py-4" style="background-color: var(--cream-light); border-top: 1.5px solid var(--latte);">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <img src="assets/images/logo.svg" alt="CartShare Logo" width="28" height="28">
+        <span class="font-display text-burgundy-dark fw-bold fs-5">CartShare</span>
+        <span class="text-concrete font-mono small">· The Living Market</span>
+      </div>
+      
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- App Bootstrap & UI Effects Module -->
+  <script type="module" src="js/app.js"></script>
+
+  <!-- Interactive Demo Script -->
+  <script type="module">
+    import { initCustomCursor, initTilt, initMagneticButtons, initScrollProgress, initParallaxFloat, triggerConfettiBurst, animateCounter } from './js/ui-effects.js';
+
+    // Initialize global landing effects
+    initCustomCursor();
+    initTilt('.tilt-card', 10);
+    initMagneticButtons('.btn-magnetic');
+    initScrollProgress();
+    initParallaxFloat('.parallax-float');
+
+    // --- Interactive Live Demo Logic ---
+    const DEMO_ITEMS = [
+      { id: 'd_mango', name: 'Alphonso Mangoes', price: 420, unit: '1 kg', img: 'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=80' },
+      { id: 'd_milk', name: 'Farm Cow Milk', price: 85, unit: '1 Litre', img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80' },
+      { id: 'd_bread', name: 'Sourdough Boule', price: 220, unit: '450 g', img: 'https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=400&q=80' },
+      { id: 'd_eggs', name: 'Free-Range Eggs', price: 95, unit: '6 pk', img: 'https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=400&q=80' },
+      { id: 'd_apples', name: 'Shimla Apples', price: 180, unit: '1 kg', img: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=400&q=80' },
+      { id: 'd_tea', name: 'Assam CTC Tea', price: 240, unit: '250 g', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=400&q=80' }
+    ];
+
+    const DEMO_MEMBERS = [
+      { id: 'you',   name: 'You',   initials: 'YO', color: '#722F37' },
+      { id: 'rohan', name: 'Rohan', initials: 'RM', color: '#6F8460' },
+      { id: 'aarti', name: 'Aarti', initials: 'AV', color: '#C68200' }
+    ];
+
+    let demoCart = [];
+    let activeMember = 'you';
+    let hasTriggeredCelebration = false;
+    const DEMO_TARGET = 500;
+
+    function renderDemoProducts() {
+      const grid = document.getElementById('demoProductsGrid');
+      if (!grid) return;
+
+      grid.innerHTML = DEMO_ITEMS.map(item => {
+        const inCart = demoCart.find(c => c.id === item.id);
+        const qty = inCart ? inCart.qty : 0;
+        return `
+          <div class="col-6 col-sm-4">
+            <div class="demo-stall-card">
+              <img src="${item.img}" alt="${item.name}" class="demo-stall-img">
+              <div class="demo-stall-name">${item.name}</div>
+              <div class="demo-stall-unit">${item.unit}</div>
+              <div class="demo-stall-footer">
+                <span class="demo-stall-price">₹${item.price}</span>
+                <button type="button" class="btn btn-burgundy btn-sm font-mono demo-add-btn" data-id="${item.id}">
+                  ${qty > 0 ? `+ Add (${qty})` : '+ Add'}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('.demo-add-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const product = DEMO_ITEMS.find(p => p.id === id);
+          if (product) addDemoItem(product);
+        });
+      });
+    }
+
+    function addDemoItem(product, memberId = activeMember) {
+      let existing = demoCart.find(c => c.id === product.id);
+      if (!existing) {
+        existing = { ...product, qty: 0, contrib: { you: 0, rohan: 0, aarti: 0 } };
+        demoCart.push(existing);
+      }
+      existing.qty += 1;
+      existing.contrib[memberId] += 1;
+      updateDemoUI();
+    }
+
+    function updateDemoUI() {
+      const subtotalEl = document.getElementById('demoSubtotal');
+      const countEl = document.getElementById('demoCartCount');
+      const fillEl = document.getElementById('demoRunwayFill');
+      const markerEl = document.getElementById('demoRunwayMarker');
+      const statusEl = document.getElementById('demoRunwayStatus');
+      const remEl = document.getElementById('demoRunwayRemaining');
+      const listEl = document.getElementById('demoCartList');
+      const ledgerEl = document.getElementById('demoLedgerBars');
+
+      const totalQty = demoCart.reduce((sum, i) => sum + i.qty, 0);
+      const subtotal = demoCart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      const percentage = Math.min(100, Math.round((subtotal / DEMO_TARGET) * 100));
+
+      countEl.textContent = `${totalQty} Items`;
+      animateCounter(subtotalEl, subtotal, '₹', 400);
+
+      fillEl.style.width = `${percentage}%`;
+      markerEl.style.left = `${percentage}%`;
+
+      if (subtotal >= DEMO_TARGET) {
+        fillEl.classList.add('completed');
+        statusEl.innerHTML = `<span class="stamp-badge stamp-sage stamp-slam"><i class="bi bi-check-circle"></i> TARGET REACHED</span>`;
+        remEl.textContent = `₹500 threshold reached! Delivery is waived.`;
+        
+        if (!hasTriggeredCelebration) {
+          hasTriggeredCelebration = true;
+          triggerConfettiBurst(document.getElementById('demoBasketCard'));
+        }
+      } else {
+        fillEl.classList.remove('completed');
+        statusEl.textContent = `Goal: ₹${DEMO_TARGET}`;
+        remEl.textContent = `₹${DEMO_TARGET - subtotal} more for free delivery`;
+        hasTriggeredCelebration = false;
+      }
+
+      // Render demo cart lines
+      if (demoCart.length === 0) {
+        listEl.innerHTML = '<p class="text-muted font-mono small text-center py-3 mb-0">No items yet. Click products on the left!</p>';
+      } else {
+        listEl.innerHTML = demoCart.map(item => `
+          <div class="demo-cart-line">
+            <div class="demo-cart-line-info">
+              <span><strong>${item.name}</strong> <span class="text-muted">× ${item.qty}</span></span>
+              <span class="demo-contrib">${DEMO_MEMBERS.filter(m => item.contrib[m.id] > 0).map(m => `${m.name}: ${item.contrib[m.id]}`).join(' · ')}</span>
+            </div>
+            <span class="fw-bold text-burgundy">₹${item.price * item.qty}</span>
+          </div>
+        `).join('');
+      }
+
+      // Fair Share Ledger: real per-member totals from who added what
+      const memberTotals = DEMO_MEMBERS.map(m => ({
+        ...m,
+        amount: demoCart.reduce((sum, i) => sum + i.price * (i.contrib[m.id] || 0), 0)
+      }));
+
+      ledgerEl.innerHTML = memberTotals.map(m => {
+        const exactPct = subtotal > 0 ? (m.amount / subtotal) * 100 : 0;
+        return `
+          <div class="demo-ledger-row">
+            <div class="demo-ledger-top font-mono small">
+              <span class="demo-ledger-name">
+                <span class="avatar-circle" style="background:${m.color};">${m.initials}</span>
+                <span>${m.name} <span class="demo-ledger-pct">(${Math.round(exactPct)}%)</span></span>
+              </span>
+              <strong>₹${m.amount}</strong>
+            </div>
+            <div class="share-bar-container"><div class="share-bar-fill" style="width: ${exactPct}%; background: ${m.color};"></div></div>
+          </div>
+        `;
+      }).join('') + `
+        <div class="demo-ledger-total small">
+          <span>Group Subtotal</span>
+          <span>₹${subtotal}</span>
+        </div>
+      `;
+
+      renderDemoProducts();
+    }
+
+    document.getElementById('demoResetBtn')?.addEventListener('click', () => {
+      demoCart = [];
+      hasTriggeredCelebration = false;
+      updateDemoUI();
+    });
+
+    // "Adding as" member picker
+    document.querySelectorAll('#demoMemberPicker .demo-member-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        activeMember = chip.getAttribute('data-member');
+        document.querySelectorAll('#demoMemberPicker .demo-member-chip').forEach(c => c.classList.toggle('active', c === chip));
+      });
+    });
+
+    // Start with 1 demo product for instant life
+    addDemoItem(DEMO_ITEMS[0], 'you');
+  </script>
+</body>
+</html>

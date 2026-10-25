@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Room — CartShare</title>
+  <meta name="description" content="Collaborate on a real-time shared grocery basket with your room members.">
+
+  <!-- Google Fonts: Editorial Serif + Clean Geometric Sans + Monospace -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+
+  <!-- Premium Grocery-Tech Dashboard Redesign Styles -->
+  <style>
+    :root {
+      --cs-bg: #F6F3EC;
+      --cs-surface: #FFFFFF;
+      --cs-surface-subtle: #FAF8F4;
+      --cs-border: #E6E0D5;
+      --cs-border-strong: #D5CCB9;
+      --cs-burgundy: #681823;
+      --cs-burgundy-hover: #4F1019;
+      --cs-burgundy-soft: #F7ECEE;
+      --cs-marigold: #E59A28;
+      --cs-marigold-soft: #FCF4E4;
+      --cs-olive: #2E6449;
+      --cs-olive-soft: #EAF3EE;
+      --cs-ink: #1B1917;
+      --cs-muted: #6C655D;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-xs: 0 1px 2px rgba(27, 25, 23, 0.04);
+      --shadow-sm: 0 4px 12px rgba(27, 25, 23, 0.05);
+      --shadow-md: 0 10px 28px rgba(27, 25, 23, 0.07);
+    }
+
+    body.room-page-content {
+      background-color: var(--cs-bg) !important;
+      background-image: none !important;
+      color: var(--cs-ink);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 96px;
+    }
+
+    /* Disable any global tilt/transform jumps */
+    .product-tile,
+    .product-tile:hover,
+    .btn,
+    .btn:hover,
+    .category-chip,
+    .category-chip:hover {
+      translate: none !important;
+      rotate: none !important;
+      scale: none !important;
+    }
+
+    /* ==========================================
+       1. TOP ROOM HEADER
+       ========================================== */
+    .room-header-band {
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      background: rgba(255, 255, 255, 0.92) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cs-border) !important;
+      box-shadow: var(--shadow-xs) !important;
+      padding: 12px 0;
+    }
+
+    .brand-logo-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--cs-burgundy);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background 0.15s ease;
+      flex-shrink: 0;
+    }
+    .brand-logo-box:hover {
+      background: var(--cs-burgundy-hover);
+      color: #fff;
+    }
+
+    .header-room-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--cs-ink);
+      letter-spacing: -0.02em;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    /* Clean Status Pill (Replaces rotated stamps) */
+    .status-pill,
+    #headerRoomStatus.stamp-badge {
+      display: inline-flex !important;
+      align-items: center;
+      padding: 2px 9px !important;
+      border-radius: 999px !important;
+      font-family: var(--font-sans) !important;
+      font-size: 0.68rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase;
+      transform: none !important;
+      border: 1px solid transparent !important;
+      box-shadow: none !important;
+    }
+    #headerRoomStatus.stamp-sage,
+    #headerRoomStatus.stamp-marigold {
+      background: var(--cs-olive-soft) !important;
+      color: var(--cs-olive) !important;
+      border-color: rgba(46, 100, 73, 0.2) !important;
+    }
+    #headerRoomStatus.stamp-closed {
+      background: #F3F1EE !important;
+      color: var(--cs-muted) !important;
+      border-color: var(--cs-border) !important;
+    }
+
+    .header-meta-line {
+      font-size: 0.78rem;
+      color: var(--cs-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    /* Sleek Room Code Bar */
+    .room-code-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--cs-surface-subtle);
+      border: 1px solid var(--cs-border);
+      border-radius: 10px;
+      padding: 5px 6px 5px 14px;
+    }
+    .room-code-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--cs-muted);
+    }
+    .room-code-value {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--cs-burgundy);
+      letter-spacing: 0.06em;
+    }
+    .code-action-btn {
+      border: 1px solid var(--cs-border);
+      background: var(--cs-surface);
+      color: var(--cs-ink);
+      font-family: var(--font-sans);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .code-action-btn:hover {
+      border-color: var(--cs-burgundy);
+      color: var(--cs-burgundy);
+      background: var(--cs-burgundy-soft);
+    }
+    .code-action-btn.invite-accent {
+      background: var(--cs-marigold-soft);
+      border-color: rgba(229, 154, 40, 0.4);
+      color: #8A5608;
+    }
+    .code-action-btn.invite-accent:hover {
+      background: var(--cs-marigold);
+      border-color: var(--cs-marigold);
+      color: #fff;
+    }
+
+    /* Header Action Buttons */
+    .btn-header-primary {
+      background: var(--cs-burgundy);
+      color: #fff;
+      border: 1px solid var(--cs-burgundy);
+      border-radius: 9px;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      transition: background 0.15s ease;
+    }
+    .btn-header-primary:hover {
+      background: var(--cs-burgundy-hover);
+      color: #fff;
+    }
+    .btn-header-secondary {
+      background: transparent;
+      color: var(--cs-muted);
+      border: 1px solid var(--cs-border-strong);
+      border-radius: 9px;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 7px 12px;
+      transition: all 0.15s ease;
+    }
+    .btn-header-secondary:hover {
+      background: #fff;
+      color: var(--cs-ink);
+      border-color: var(--cs-ink);
+    }
+
+    /* ==========================================
+       2. SEARCH & FILTER CONTROL BAR
+       ========================================== */
+    .catalogue-toolbar {
+      background: var(--cs-surface);
+      border: 1px solid var(--cs-border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-field-wrap {
+      position: relative;
+    }
+    .search-field-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--cs-muted);
+      font-size: 0.92rem;
+      pointer-events: none;
+    }
+    .search-field-input {
+      width: 100%;
+      padding: 9px 14px 9px 38px;
+      border-radius: 10px;
+      border: 1px solid var(--cs-border);
+      background: var(--cs-surface-subtle);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--cs-ink);
+      transition: all 0.15s ease;
+    }
+    .search-field-input::placeholder {
+      color: #9A9288;
+    }
+    .search-field-input:focus {
+      outline: none;
+      background: #fff;
+      border-color: var(--cs-burgundy);
+      box-shadow: 0 0 0 3px rgba(104, 24, 35, 0.08);
+    }
+
+    .toolbar-chip-btn {
+      border: 1px solid var(--cs-border);
+      background: var(--cs-surface-subtle);
+      color: var(--cs-ink);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+    }
+    .toolbar-chip-btn:hover {
+      border-color: var(--cs-border-strong);
+      background: #fff;
+    }
+    .toolbar-chip-btn.active {
+      background: var(--cs-olive);
+      border-color: var(--cs-olive);
+      color: #fff;
+    }
+    .toolbar-chip-count {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(27, 25, 23, 0.08);
+      color: var(--cs-ink);
+    }
+    .toolbar-chip-btn.active .toolbar-chip-count {
+      background: rgba(255, 255, 255, 0.22);
+      color: #fff;
+    }
+
+    .toolbar-select {
+      border-radius: 10px !important;
+      border: 1px solid var(--cs-border) !important;
+      background-color: var(--cs-surface-subtle) !important;
+      font-family: var(--font-sans) !important;
+      font-size: 0.82rem !important;
+      font-weight: 500 !important;
+      color: var(--cs-ink) !important;
+      padding: 8px 32px 8px 12px !important;
+      cursor: pointer;
+    }
+    .toolbar-select:focus {
+      border-color: var(--cs-burgundy) !important;
+      box-shadow: 0 0 0 3px rgba(104, 24, 35, 0.08) !important;
+    }
+
+    .view-toggle-group {
+      display: inline-flex;
+      background: var(--cs-surface-subtle);
+      border: 1px solid var(--cs-border);
+      border-radius: 10px;
+      padding: 2px;
+    }
+    .view-toggle-btn {
+      border: none;
+      background: transparent;
+      color: var(--cs-muted);
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 0.84rem;
+      transition: all 0.15s ease;
+    }
+    .view-toggle-btn.active {
+      background: var(--cs-surface);
+      color: var(--cs-burgundy);
+      box-shadow: var(--shadow-xs);
+    }
+
+    /* Category Filter Pills */
+    .category-scroller {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      overflow-x: visible !important;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--cs-border);
+    }
+    @media (max-width: 767.98px) {
+      .category-scroller {
+        flex-wrap: nowrap;
+        overflow-x: auto !important;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+      .category-scroller::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .category-chip {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      padding: 6px 13px !important;
+      border-radius: 999px !important;
+      border: 1px solid var(--cs-border) !important;
+      background: var(--cs-surface-subtle) !important;
+      color: var(--cs-ink) !important;
+      font-family: var(--font-sans) !important;
+      font-weight: 500 !important;
+      font-size: 0.81rem !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .category-chip::before,
+    .category-chip::after {
+      display: none !important;
+    }
+    .category-chip span {
+      color: inherit !important;
+    }
+    .category-chip:hover {
+      border-color: var(--cs-burgundy) !important;
+      background: var(--cs-burgundy-soft) !important;
+      color: var(--cs-burgundy) !important;
+    }
+    .category-chip.active,
+    .category-chip.active:hover {
+      background: var(--cs-burgundy) !important;
+      border-color: var(--cs-burgundy) !important;
+      color: #ffffff !important;
+      font-weight: 600 !important;
+    }
+    .category-chip.active span,
+    .category-chip.active:hover span {
+      color: #ffffff !important;
+    }
+    .category-chip .chip-count {
+      font-family: var(--font-mono) !important;
+      font-size: 0.68rem !important;
+      padding: 1px 6px !important;
+      border-radius: 999px !important;
+      background: rgba(27, 25, 23, 0.06) !important;
+      color: var(--cs-muted) !important;
+    }
+    .category-chip:hover .chip-count {
+      background: rgba(104, 24, 35, 0.12) !important;
+      color: var(--cs-burgundy) !important;
+    }
+    .category-chip.active .chip-count,
+    .category-chip.active:hover .chip-count {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+    }
+
+    /* ==========================================
+       3. CATALOGUE HEADER & PRODUCT CARDS
+       ========================================== */
+    .section-header-bar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding: 0 2px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--cs-ink);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .section-subtitle {
+      font-size: 0.82rem;
+      color: var(--cs-muted);
+      font-weight: 500;
+    }
+
+    /* Product Grid */
+    .stalls-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)) !important;
+      gap: 18px !important;
+      align-items: stretch !important;
+    }
+
+    /* Product Card */
+    .product-tile,
+    .product-tile.featured-tile {
+      grid-column: span 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      height: 100% !important;
+      background: var(--cs-surface) !important;
+      border: 1px solid var(--cs-border) !important;
+      border-radius: var(--radius-md) !important;
+      overflow: hidden !important;
+      position: relative !important;
+      box-shadow: var(--shadow-xs) !important;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    }
+    .product-tile:hover {
+      border-color: var(--cs-border-strong) !important;
+      box-shadow: var(--shadow-md) !important;
+      transform: none !important;
+    }
+    .product-tile.in-room-basket {
+      border-color: rgba(46, 100, 73, 0.45) !important;
+      box-shadow: 0 0 0 1px rgba(46, 100, 73, 0.2), var(--shadow-sm) !important;
+    }
+
+    /* Unobstructed Product Image */
+    .tile-media {
+      position: relative !important;
+      width: 100% !important;
+      aspect-ratio: 4 / 3 !important;
+      height: auto !important;
+      background: #F3EFE6 !important;
+      overflow: hidden !important;
+      border-bottom: 1px solid var(--cs-border) !important;
+    }
+    .tile-image {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center !important;
+      display: block !important;
+      transition: transform 0.35s ease !important;
+    }
+    .product-tile:hover .tile-image {
+      transform: scale(1.03) !important;
+    }
+
+    /* Card Content Body */
+    .tile-body {
+      padding: 14px 16px 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 1 1 auto !important;
+      justify-content: space-between !important;
+    }
+    .tile-meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .tile-category-overline {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cs-muted);
+    }
+    .tile-origin-subtle {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--cs-olive);
+      background: var(--cs-olive-soft);
+      padding: 1px 7px;
+      border-radius: 999px;
+    }
+
+    .tile-title {
+      font-family: var(--font-sans) !important;
+      font-size: 0.96rem !important;
+      font-weight: 600 !important;
+      color: var(--cs-ink) !important;
+      line-height: 1.35 !important;
+      margin: 0 0 3px 0 !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .tile-unit {
+      font-size: 0.78rem !important;
+      color: var(--cs-muted) !important;
+      margin-bottom: 10px !important;
+    }
+
+    /* Shared Basket Indicator inside Card */
+    .tile-shared-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--cs-olive);
+      background: var(--cs-olive-soft);
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    /* Card Footer: Price & Action */
+    .tile-footer {
+      margin-top: auto !important;
+      padding-top: 12px !important;
+      border-top: 1px solid var(--cs-border) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+    }
+    .tile-price {
+      font-family: var(--font-sans) !important;
+      font-size: 1.08rem !important;
+      font-weight: 700 !important;
+      color: var(--cs-ink) !important;
+      letter-spacing: -0.01em;
+    }
+
+    .add-to-cart-btn {
+      background: var(--cs-burgundy) !important;
+      color: #fff !important;
+      border: 1px solid var(--cs-burgundy) !important;
+      border-radius: 8px !important;
+      padding: 6px 14px !important;
+      font-family: var(--font-sans) !important;
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+      box-shadow: none !important;
+      transition: background 0.15s ease !important;
+    }
+    .add-to-cart-btn:hover {
+      background: var(--cs-burgundy-hover) !important;
+      border-color: var(--cs-burgundy-hover) !important;
+    }
+
+    .stepper-control {
+      display: inline-flex !important;
+      align-items: center !important;
+      background: var(--cs-surface-subtle) !important;
+      border: 1px solid var(--cs-burgundy) !important;
+      border-radius: 8px !important;
+      overflow: hidden !important;
+      box-shadow: none !important;
+    }
+    .stepper-btn {
+      width: 28px !important;
+      height: 28px !important;
+      border: none !important;
+      background: transparent !important;
+      color: var(--cs-burgundy) !important;
+      font-weight: 600 !important;
+      font-size: 0.95rem !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer;
+    }
+    .stepper-btn:hover:not(:disabled) {
+      background: var(--cs-burgundy) !important;
+      color: #fff !important;
+    }
+    .stepper-val {
+      min-width: 26px !important;
+      text-align: center !important;
+      font-family: var(--font-mono) !important;
+      font-weight: 600 !important;
+      font-size: 0.82rem !important;
+      color: var(--cs-ink) !important;
+    }
+
+    /* Compact List View Mode */
+    .stalls-grid.compact-list-view {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+      gap: 10px !important;
+    }
+    .stalls-grid.compact-list-view .product-tile {
+      flex-direction: row !important;
+      align-items: center !important;
+      padding: 10px 14px !important;
+      gap: 14px !important;
+    }
+    .stalls-grid.compact-list-view .tile-media {
+      width: 72px !important;
+      height: 72px !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 8px !important;
+      border: 1px solid var(--cs-border) !important;
+      flex-shrink: 0 !important;
+    }
+    .stalls-grid.compact-list-view .tile-body {
+      padding: 0 !important;
+    }
+    .stalls-grid.compact-list-view .tile-footer {
+      border-top: none !important;
+      padding-top: 4px !important;
+    }
+
+    /* ==========================================
+       4. RIGHT-SIDE BASKET PANEL (STICKY CONSOLE)
+       ========================================== */
+    @media (min-width: 1200px) {
+      .room-right-rail .basket-slip {
+        position: sticky !important;
+        top: 80px !important;
+        max-height: calc(100vh - 96px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        border-radius: var(--radius-lg) !important;
+        border: 1px solid var(--cs-border) !important;
+        background: var(--cs-surface) !important;
+        box-shadow: var(--shadow-md) !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+      }
+    }
+
+    .basket-panel-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--cs-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .basket-panel-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--cs-ink);
+      margin: 0;
+    }
+    .basket-count-pill {
+      background: var(--cs-burgundy-soft);
+      color: var(--cs-burgundy);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* Segmented Console Tabs */
+    .basket-segmented-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      background: var(--cs-surface-subtle);
+      padding: 6px 16px;
+      border-bottom: 1px solid var(--cs-border);
+    }
+    .slip-tab-btn {
+      border: none;
+      background: transparent;
+      padding: 7px 8px;
+      border-radius: 7px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--cs-muted);
+      transition: all 0.15s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .slip-tab-btn:hover {
+      color: var(--cs-ink);
+    }
+    .slip-tab-btn.active {
+      background: var(--cs-surface);
+      color: var(--cs-burgundy);
+      box-shadow: var(--shadow-xs);
+    }
+
+    /* Scrollable Panel Body */
+    .slip-scrollable-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 16px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--cs-border-strong) transparent;
+    }
+
+    /* Clean Overrides for Injected Runway & Ledger Widgets */
+    #deliveryRunwayContainer > div,
+    #mobileRunwayContainer > div {
+      background: var(--cs-surface-subtle) !important;
+      border: 1px solid var(--cs-border) !important;
+      border-radius: var(--radius-md) !important;
+      padding: 12px 14px !important;
+      box-shadow: none !important;
+    }
+    #deliveryRunwayContainer .stamp-badge,
+    #fairShareLedgerContainer .stamp-badge {
+      transform: none !important;
+      border-radius: 6px !important;
+      font-family: var(--font-sans) !important;
+      font-size: 0.65rem !important;
+      font-weight: 600 !important;
+      box-shadow: none !important;
+    }
+
+    /* Cart Item List */
+    .cart-items-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .cart-item-row {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--cs-border);
+    }
+    .cart-item-row:last-child {
+      border-bottom: none;
+    }
+    .cart-item-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .cart-item-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--cs-border);
+      flex-shrink: 0;
+    }
+    .cart-item-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--cs-ink);
+      line-height: 1.3;
+    }
+    .cart-contributor-breakdown {
+      font-size: 0.74rem;
+      color: var(--cs-muted);
+      margin-top: 2px;
+    }
+    .cart-item-price {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--cs-ink);
+    }
+    .cart-my-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding: 5px 10px;
+      background: var(--cs-surface-subtle);
+      border-radius: 8px;
+    }
+
+    /* Basket Footer Dock */
+    .slip-footer-dock {
+      padding: 16px 20px;
+      background: var(--cs-surface);
+      border-top: 1px solid var(--cs-border);
+    }
+    .subtotal-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cs-muted);
+    }
+    .subtotal-amount {
+      font-family: var(--font-sans);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--cs-ink);
+      letter-spacing: -0.02em;
+    }
+    .btn-checkout-receipt {
+      background: var(--cs-burgundy);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      width: 100%;
+      transition: background 0.15s ease;
+    }
+    .btn-checkout-receipt:hover {
+      background: var(--cs-burgundy-hover);
+      color: #fff;
+    }
+
+    /* ==========================================
+       5. MOBILE STICKY BAR (< 1200px)
+       ========================================== */
+    @media (max-width: 1199.98px) {
+      .room-right-rail {
+        display: none !important;
+      }
+      .mobile-basket-bar {
+        position: fixed;
+        bottom: 14px;
+        left: 14px;
+        right: 14px;
+        z-index: 1040;
+        background: var(--cs-ink);
+        color: #fff;
+        border-radius: 14px;
+        padding: 12px 16px;
+        box-shadow: 0 12px 28px rgba(27, 25, 23, 0.28);
+      }
+      .mobile-basket-bar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    @media (min-width: 1200px) {
+      .mobile-basket-bar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="room-page-content">
+
+  <!-- Top Room Header -->
+  <header class="room-header-band">
+    <div class="container-fluid px-3 px-lg-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        
+        <!-- Left: Brand & Room Info -->
+        <div class="d-flex align-items-center gap-3">
+          <a href="dashboard.html" class="brand-logo-box" title="Back to Market Desk">
+            <img src="assets/images/logo.svg" alt="CartShare" width="22" height="22" onerror="this.outerHTML='<i class=\'bi bi-basket2-fill fs-6\'></i>'">
+          </a>
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <h1 class="header-room-title text-truncate" style="max-width: 280px;" id="headerRoomName">Loading Room...</h1>
+              <span class="status-pill stamp-sage" id="headerRoomStatus">OPEN</span>
+            </div>
+            <div class="header-meta-line">
+              <span id="connectionIndicator" class="connection-pill"><span class="connection-dot"></span><span>Live Ledger</span></span>
+              <span>·</span>
+              <span class="fw-semibold text-dark" id="headerMemberCount">1 shopper</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: Clean Room Invite Code Bar -->
+        <div class="room-code-bar" id="inviteTicketBox">
+          <div class="d-flex align-items-center gap-2">
+            <span class="room-code-label">Room Code</span>
+            <span class="room-code-value" id="headerInviteCode">CS-....</span>
+          </div>
+          <div class="d-flex align-items-center gap-1">
+            <button type="button" class="code-action-btn" id="copyCodeBtn" title="Copy room code">
+              <i class="bi bi-copy"></i><span id="copyCodeText">Copy</span>
+            </button>
+            <button type="button" class="code-action-btn invite-accent" id="copyLinkBtn" title="Copy shareable invite link">
+              <i class="bi bi-link-45deg"></i><span id="copyLinkText">Invite</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Member Avatars & Room Actions -->
+        <div class="d-flex align-items-center gap-2">
+          <div class="member-avatars-stack me-1" id="headerMemberAvatars"></div>
+
+          <button type="button" class="btn-header-primary" id="openReceiptModalBtn">
+            <i class="bi bi-receipt me-1"></i> Review & Receipt
+          </button>
+
+          <button type="button" class="btn-header-secondary" id="roomManageActionBtn">
+            Leave Room
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="container-fluid px-3 px-lg-4 py-4">
+    <div class="row g-4 align-items-start">
+      
+      <!-- Left Column: Product Catalogue -->
+      <section class="col-12 col-xl-8">
+        
+        <!-- Search, Filter & Category Bar -->
+        <div class="catalogue-toolbar mb-4">
+          <div class="row g-2 align-items-center">
+            
+            <!-- Search Input -->
+            <div class="col-12 col-md-5">
+              <div class="search-field-wrap">
+                <i class="bi bi-search"></i>
+                <input type="search" class="search-field-input" id="stallSearchInput" placeholder="Search mangoes, milk, sourdough, coffee..." autocomplete="off">
+              </div>
+            </div>
+
+            <!-- Controls: In Basket Filter, Sort, View Mode -->
+            <div class="col-12 col-md-7">
+              <div class="d-flex align-items-center justify-content-md-end flex-wrap gap-2">
+                
+                <button type="button" class="toolbar-chip-btn" id="filterInBasketBtn" title="Filter items currently in the shared basket">
+                  <i class="bi bi-basket2"></i>
+                  <span>In Basket</span>
+                  <span class="toolbar-chip-count" id="inBasketFilterBadge">0</span>
+                </button>
+
+                <select class="form-select form-select-sm w-auto toolbar-select" id="stallSortSelect">
+                  <option value="featured">Sort: Featured</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="name-az">Name: A to Z</option>
+                </select>
+
+                <div class="view-toggle-group" role="group" aria-label="View mode">
+                  <button type="button" class="view-toggle-btn active" id="viewGridBtn" title="Grid View">
+                    <i class="bi bi-grid-3x3-gap-fill"></i>
+                  </button>
+                  <button type="button" class="view-toggle-btn" id="viewListBtn" title="Compact List View">
+                    <i class="bi bi-list-ul"></i>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Category Filter Chips -->
+          <div class="category-scroller" id="categoryChipsContainer"></div>
+        </div>
+
+        <!-- Section Title Bar -->
+        <div class="section-header-bar">
+          <div class="d-flex align-items-baseline gap-2 flex-wrap">
+            <h2 class="section-title">The Market Stalls</h2>
+            <span class="section-subtitle" id="activeCategorySubtitle">· All Categories</span>
+          </div>
+          <span class="section-subtitle" id="stallsItemCountNotice">38 items</span>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="stalls-grid" id="stallsProductGrid"></div>
+
+        <!-- Empty Search/Filter State -->
+        <div id="stallsEmptyState" class=" p-5 text-center mt-3 d-none" style="background: var(--cs-surface); border: 1px solid var(--cs-border); border-radius: var(--radius-lg);">
+          <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width: 56px; height: 56px; background: var(--cs-surface-subtle); color: var(--cs-muted);">
+            <i class="bi bi-search fs-4"></i>
+          </div>
+          <h4 class="mb-1" style="font-family: var(--font-display); font-size: 1.2rem;">No matching items found</h4>
+          <p class="text-muted small mb-3">Try clearing your search or selecting another category.</p>
+          <button type="button" class="btn-header-primary" id="resetFiltersBtn">
+            Reset Filters
+          </button>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Sticky Shared Basket Console -->
+      <aside class="col-12 col-xl-4 room-right-rail">
+        <div class="basket-slip">
+          
+          <!-- Panel Header -->
+          <div class="basket-panel-header">
+            <div>
+              <h3 class="basket-panel-title">Shared Basket</h3>
+              <span class="text-muted" style="font-size: 0.76rem;">Real-time group cart</span>
+            </div>
+            <span class="basket-count-pill" id="cartTotalItemsBadge">0 Items</span>
+          </div>
+
+          <!-- Segmented Switcher -->
+          <div class="basket-segmented-tabs" role="tablist">
+            <button type="button" class="slip-tab-btn active" data-slip-tab="pane-cart">
+              Basket
+            </button>
+            <button type="button" class="slip-tab-btn" data-slip-tab="pane-split">
+              Fair Split
+            </button>
+            <button type="button" class="slip-tab-btn" data-slip-tab="pane-pulse">
+              Activity
+            </button>
+          </div>
+
+          <!-- Scrollable Content -->
+          <div class="slip-scrollable-body">
+            
+            <!-- Tab 1: Basket Items & Delivery Progress -->
+            <div id="pane-cart" class="slip-tab-pane">
+              <div id="deliveryRunwayContainer" class="mb-3"></div>
+
+              <div id="cartItemsContainer">
+                <ul class="cart-items-list" id="cartItemsList"></ul>
+              </div>
+
+              <!-- Empty Basket State -->
+              <div id="cartEmptyNotice" class="text-center py-4">
+                <div class="mx-auto mb-2 d-flex align-items-center justify-content-center rounded-circle" style="width: 48px; height: 48px; background: var(--cs-surface-subtle); color: var(--cs-muted);">
+                  <i class="bi bi-basket2 fs-5"></i>
+                </div>
+                <p class="small text-muted mb-0">Your shared basket is empty.<br>Add items from the stalls to begin.</p>
+              </div>
+            </div>
+
+            <!-- Tab 2: Fair Share Member Split -->
+            <div id="pane-split" class="slip-tab-pane d-none">
+              <div id="fairShareLedgerContainer"></div>
+            </div>
+
+            <!-- Tab 3: Room Activity Feed -->
+            <div id="pane-pulse" class="slip-tab-pane d-none">
+              <div id="activityFeedContainer"></div>
+            </div>
+
+          </div>
+
+          <!-- Sticky Subtotal & Receipt Action Footer -->
+          <div class="slip-footer-dock">
+            <div class="d-flex justify-content-between align-items-baseline mb-3">
+              <span class="subtotal-label">Basket Subtotal</span>
+              <span class="subtotal-amount" id="liveSubtotalAmount">₹0</span>
+            </div>
+            <button type="button" class="btn-checkout-receipt" id="desktopSlipReceiptBtn">
+              <i class="bi bi-receipt me-2"></i>View Split & Official Receipt
+            </button>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Sticky Bar (< 1200px) -->
+  <div class="mobile-basket-bar">
+    <div class="mobile-basket-bar-inner">
+      <div>
+        <div class="small text-white-50" id="mobileCartItemCount">0 Items in Basket</div>
+        <div class="fs-5 fw-bold text-white" id="mobileCartSubtotal">₹0</div>
+      </div>
+      <button type="button" class="btn btn-warning fw-semibold px-3 py-2 rounded-3" data-bs-toggle="offcanvas" data-bs-target="#mobileBasketOffcanvas">
+        <i class="bi bi-basket2-fill me-1"></i> View Basket
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Offcanvas Sheet -->
+  <div class="offcanvas offcanvas-bottom" tabindex="-1" id="mobileBasketOffcanvas" aria-labelledby="mobileBasketOffcanvasLabel" style="height: 85vh; border-radius: 20px 20px 0 0; background: var(--cs-surface);">
+    <div class="offcanvas-header border-bottom py-3">
+      <div>
+        <h5 class="offcanvas-title mb-0" style="font-family: var(--font-display); font-weight: 700;" id="mobileBasketOffcanvasLabel">Shared Basket</h5>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    
+    <div class="offcanvas-body p-0 d-flex flex-column">
+      <ul class="nav nav-tabs px-3 pt-2 small fw-semibold" id="mobileBasketTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-basket" type="button" role="tab">Basket</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-runway" type="button" role="tab">Delivery</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-ledger" type="button" role="tab">Fair Split</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activity" type="button" role="tab">Activity</button>
+        </li>
+      </ul>
+
+      <div class="tab-content p-3 flex-grow-1 overflow-auto" id="mobileBasketTabContent">
+        <div class="tab-pane fade show active" id="tab-basket" role="tabpanel">
+          <div id="mobileCartItemsList"></div>
+          <div class="border-top py-3 my-2 d-flex justify-content-between align-items-center">
+            <span class="fw-semibold text-muted">Subtotal</span>
+            <span class="fw-bold fs-4" id="mobileModalSubtotal">₹0</span>
+          </div>
+          <button type="button" class="btn-checkout-receipt mt-2" id="mobileReceiptModalTrigger">
+            <i class="bi bi-receipt me-2"></i>Review Cart & Official Receipt
+          </button>
+        </div>
+
+        <div class="tab-pane fade" id="tab-runway" role="tabpanel">
+          <div id="mobileRunwayContainer"></div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-ledger" role="tabpanel">
+          <div id="mobileLedgerContainer"></div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-activity" role="tabpanel">
+          <div id="mobileActivityContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Summary Receipt Modal -->
+  <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg); background: var(--cs-surface);">
+        <div class="modal-header border-bottom">
+          <div>
+            <h5 class="modal-title mb-0" style="font-family: var(--font-display); font-weight: 700;" id="receiptModalTitle">Shopping Summary & Split Receipt</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3 p-md-4" id="receiptModalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leave / Close Room Confirmation Modal -->
+  <div class="modal fade" id="roomManageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg); background: var(--cs-surface);">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title mb-0" style="font-family: var(--font-display); font-weight: 700;" id="manageModalTitle">Room Action</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-dark mb-0" id="manageModalMessage">Are you sure?</p>
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn-header-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn-header-primary" id="confirmManageActionBtn">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Room Controller Script (All Existing Business Logic & Sync Preserved) -->
+  <script type="module">
+    import { requireAuth } from './js/auth.js';
+    import { getParam, formatCurrency, escapeHtml, showToast, getAvatarColor, getInitials, debounce } from './js/utils.js';
+    import { PRODUCTS, CATEGORIES, CATEGORY_META, filterProducts } from './js/products.js';
+    import { addItem, changeMyQty, removeMine } from './js/cart.js';
+    import { subscribeToRoom, initConnectionTracker, cleanupListeners } from './js/sync.js';
+    import { copyInviteCode, copyInviteLink, leaveRoom, closeRoom } from './js/rooms.js';
+    import { renderDeliveryRunway } from './js/runway.js';
+    import { renderFairShareLedger } from './js/ledger.js';
+    import { renderActivityFeed } from './js/activity.js';
+    import { renderReceipt } from './js/receipt.js';
+    import { flyToBasket, triggerConfettiBurst } from './js/ui-effects.js';
+
+    let currentRoom = null;
+    let currentMembers = [];
+    let currentItems = [];
+    let currentActivities = [];
+    let currentSearch = '';
+    let currentCategory = 'All Stalls';
+    let currentSort = 'featured';
+    let onlyInBasket = false;
+    let currentUser = null;
+    let celebratedTarget = false;
+
+    /**
+     * Clean minimal SVG fallback if both primary and backup image fail
+     */
+    function buildCleanFallbackSvg(item) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+        <rect width="400" height="300" fill="#F3EFE6"/>
+        <text x="200" y="155" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#6C655D" text-anchor="middle">${escapeHtml(item.name.slice(0, 28))}</text>
+      </svg>`;
+      return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+
+    window.handleProductImageError = function(imgEl, backupUrl, productId) {
+      if (backupUrl && imgEl.dataset.triedBackup !== 'true') {
+        imgEl.dataset.triedBackup = 'true';
+        imgEl.src = backupUrl;
+        return;
+      }
+      const item = PRODUCTS.find(p => p.id === productId) || { name: 'Product' };
+      imgEl.onerror = null;
+      imgEl.src = buildCleanFallbackSvg(item);
+    };
+
+    async function initRoom() {
+      setupDesktopSlipTabs();
+      renderCategoryChips();
+      renderCatalogue();
+
+      currentUser = await requireAuth();
+      if (!currentUser) return;
+
+      const roomId = getParam('room');
+      if (!roomId) {
+        showToast('No room specified. Returning to Market Desk.', 'error');
+        setTimeout(() => window.location.href = 'dashboard.html', 1500);
+        return;
+      }
+
+      initConnectionTracker(document.getElementById('connectionIndicator'));
+      setupToolbarListeners();
+      setupInviteButtons();
+
+      subscribeToRoom(roomId, {
+        onRoomUpdate: (room) => {
+          currentRoom = room;
+          updateRoomHeaderUI();
+          renderActiveRunway();
+        },
+        onMembersUpdate: (members) => {
+          currentMembers = members;
+          updateMembersUI();
+          renderActiveLedger();
+        },
+        onItemsUpdate: (items, changedItemIds) => {
+          currentItems = items;
+          updateCartUI(changedItemIds);
+          renderCategoryChips();
+          renderCatalogue();
+          renderActiveRunway();
+          renderActiveLedger();
+        },
+        onActivityUpdate: (activities) => {
+          currentActivities = activities;
+          renderActiveActivity();
+        },
+        onError: (err) => {
+          console.error('Room subscription error:', err);
+          if (err.code === 'not-a-member') {
+            alert('You are not currently a member of this room. Please join using an invite code.');
+            window.location.href = 'dashboard.html';
+          } else if (err.code === 'room-not-found') {
+            showToast('Room not found or closed.', 'error');
+            setTimeout(() => window.location.href = 'dashboard.html', 1500);
+          }
+        }
+      });
+
+      setupReceiptModal();
+      setupRoomManagementModal();
+    }
+
+    function setupDesktopSlipTabs() {
+      const tabBtns = document.querySelectorAll('.slip-tab-btn');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-slip-tab');
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          document.querySelectorAll('.slip-tab-pane').forEach(pane => {
+            pane.classList.toggle('d-none', pane.id !== targetId);
+          });
+        });
+      });
+    }
+
+    function updateRoomHeaderUI() {
+      if (!currentRoom) return;
+
+      const nameEl = document.getElementById('headerRoomName');
+      const codeEl = document.getElementById('headerInviteCode');
+      const statusEl = document.getElementById('headerRoomStatus');
+      const manageBtn = document.getElementById('roomManageActionBtn');
+
+      if (nameEl) nameEl.textContent = currentRoom.name || 'Market Room';
+      if (codeEl) codeEl.textContent = currentRoom.code || 'CS-XXXX';
+      
+      const isOwner = currentRoom.ownerUid === currentUser?.uid;
+      const isClosed = currentRoom.status === 'closed';
+
+      if (statusEl) {
+        statusEl.className = isClosed ? 'status-pill stamp-badge stamp-closed' : 'status-pill stamp-badge stamp-sage';
+        statusEl.textContent = isClosed ? 'CLOSED' : 'OPEN';
+      }
+
+      if (manageBtn) {
+        if (isOwner) {
+          manageBtn.textContent = isClosed ? 'Room Closed' : 'Close Room';
+          manageBtn.disabled = isClosed;
+        } else {
+          manageBtn.textContent = 'Leave Room';
+        }
+      }
+    }
+
+    function updateMembersUI() {
+      const avatarsContainer = document.getElementById('headerMemberAvatars');
+      const countEl = document.getElementById('headerMemberCount');
+
+      if (countEl) {
+        countEl.textContent = `${currentMembers.length} shopper${currentMembers.length === 1 ? '' : 's'}`;
+      }
+
+      if (avatarsContainer) {
+        avatarsContainer.innerHTML = currentMembers.slice(0, 6).map(m => {
+          const color = getAvatarColor(m.uid || m.id);
+          const initials = getInitials(m.displayName || 'Shopper');
+          return `
+            <span class="avatar-circle" style="background-color: ${color};" title="${escapeHtml(m.displayName || 'Shopper')} (${m.role})">
+              ${initials}
+            </span>
+          `;
+        }).join('');
+      }
+    }
+
+    function renderCategoryChips() {
+      const container = document.getElementById('categoryChipsContainer');
+      if (!container) return;
+
+      container.innerHTML = CATEGORIES.map(cat => {
+        const count = cat === 'All Stalls'
+          ? PRODUCTS.length
+          : PRODUCTS.filter(p => p.category === cat).length;
+        return `
+          <button type="button" class="category-chip ${cat === currentCategory ? 'active' : ''}" data-category="${escapeHtml(cat)}">
+            <span>${escapeHtml(cat)}</span>
+            <span class="chip-count">${count}</span>
+          </button>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.category-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          currentCategory = chip.getAttribute('data-category');
+          const subtitle = document.getElementById('activeCategorySubtitle');
+          if (subtitle) {
+            subtitle.textContent = currentCategory === 'All Stalls' ? '· All Categories' : `· ${currentCategory}`;
+          }
+          renderCategoryChips();
+          renderCatalogue();
+        });
+      });
+    }
+
+    function renderCatalogue() {
+      const grid = document.getElementById('stallsProductGrid');
+      const emptyState = document.getElementById('stallsEmptyState');
+      const notice = document.getElementById('stallsItemCountNotice');
+      const inBasketBadge = document.getElementById('inBasketFilterBadge');
+      if (!grid) return;
+
+      if (inBasketBadge) {
+        inBasketBadge.textContent = currentItems.length;
+      }
+
+      let filtered = filterProducts(currentSearch, currentCategory, currentSort);
+      if (onlyInBasket) {
+        const activeIds = new Set(currentItems.map(i => i.id));
+        filtered = filtered.filter(item => activeIds.has(item.id));
+      }
+
+      if (notice) {
+        notice.textContent = `${filtered.length} of ${PRODUCTS.length} items`;
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState?.classList.remove('d-none');
+        return;
+      }
+      emptyState?.classList.add('d-none');
+
+      const isClosed = currentRoom?.status === 'closed';
+      const uid = currentUser?.uid;
+
+      grid.innerHTML = filtered.map(item => {
+        const cartItem = currentItems.find(i => i.id === item.id);
+        const myQty = (uid && cartItem?.contributions?.[uid]) || 0;
+        const totalQty = cartItem?.totalQty || 0;
+        const othersQty = Math.max(0, totalQty - myQty);
+        const inBasket = totalQty > 0;
+
+        let actionControlHtml = '';
+        if (isClosed) {
+          actionControlHtml = `<span class="text-muted small fw-semibold">Closed</span>`;
+        } else if (myQty > 0) {
+          actionControlHtml = `
+            <div class="stepper-control">
+              <button type="button" class="stepper-btn stepper-minus-btn" data-product-id="${item.id}" aria-label="Decrease quantity">−</button>
+              <span class="stepper-val">${myQty}</span>
+              <button type="button" class="stepper-btn stepper-plus-btn" data-product-id="${item.id}" aria-label="Increase quantity" ${myQty >= 20 ? 'disabled' : ''}>+</button>
+            </div>
+          `;
+        } else {
+          actionControlHtml = `
+            <button type="button" class="btn add-to-cart-btn" data-product-id="${item.id}">
+              + Add
+            </button>
+          `;
+        }
+
+        let contributorsNote = '';
+        if (myQty > 0 && othersQty > 0) {
+          contributorsNote = `
+            <div class="tile-shared-indicator">
+              <i class="bi bi-people-fill"></i>
+              <span>You (${myQty}) + Group (${othersQty})</span>
+            </div>`;
+        } else if (othersQty > 0) {
+          contributorsNote = `
+            <div class="tile-shared-indicator">
+              <i class="bi bi-check2"></i>
+              <span>${othersQty} in group basket</span>
+            </div>`;
+        }
+
+        const backupUrl = item.backupImage || '';
+
+        return `
+          <article class="product-tile ${inBasket ? 'in-room-basket' : ''}">
+            <div class="tile-media">
+              <img
+                src="${item.image}"
+                alt="${escapeHtml(item.name)}"
+                class="tile-image"
+                loading="lazy"
+                onerror="window.handleProductImageError(this, '${backupUrl}', '${item.id}')"
+              >
+            </div>
+            <div class="tile-body">
+              <div>
+                <div class="tile-meta-top">
+                  <span class="tile-category-overline">${escapeHtml(item.category)}</span>
+                  ${item.badge ? `<span class="tile-origin-subtle">${escapeHtml(item.badge)}</span>` : ''}
+                </div>
+                <h3 class="tile-title" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</h3>
+                <div class="tile-unit">${escapeHtml(item.unit || '')}</div>
+                ${contributorsNote}
+              </div>
+              <div class="tile-footer">
+                <span class="tile-price">${formatCurrency(item.priceInPaise)}</span>
+                ${actionControlHtml}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const pId = btn.getAttribute('data-product-id');
+          const product = PRODUCTS.find(p => p.id === pId);
+          if (product && currentRoom) {
+            btn.disabled = true;
+            const targetBadge = window.innerWidth >= 1200 
+              ? document.getElementById('cartTotalItemsBadge') 
+              : document.querySelector('.mobile-basket-bar');
+            const tileImg = btn.closest('.product-tile')?.querySelector('.tile-image');
+            if (tileImg && targetBadge) {
+              flyToBasket(tileImg, targetBadge, product.image);
+            }
+            await addItem(currentRoom.id, product);
+            btn.disabled = false;
+          }
+        });
+      });
+
+      grid.querySelectorAll('.stepper-plus-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const pId = btn.getAttribute('data-product-id');
+          if (pId && currentRoom) {
+            btn.disabled = true;
+            await changeMyQty(currentRoom.id, pId, 1);
+            btn.disabled = false;
+          }
+        });
+      });
+
+      grid.querySelectorAll('.stepper-minus-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const pId = btn.getAttribute('data-product-id');
+          if (pId && currentRoom) {
+            btn.disabled = true;
+            await changeMyQty(currentRoom.id, pId, -1);
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+
+    function setupToolbarListeners() {
+      const searchInput = document.getElementById('stallSearchInput');
+      const sortSelect = document.getElementById('stallSortSelect');
+      const resetBtn = document.getElementById('resetFiltersBtn');
+      const inBasketBtn = document.getElementById('filterInBasketBtn');
+      const viewGridBtn = document.getElementById('viewGridBtn');
+      const viewListBtn = document.getElementById('viewListBtn');
+      const grid = document.getElementById('stallsProductGrid');
+
+      searchInput?.addEventListener('input', debounce((e) => {
+        currentSearch = e.target.value;
+        renderCatalogue();
+      }, 180));
+
+      sortSelect?.addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        renderCatalogue();
+      });
+
+      inBasketBtn?.addEventListener('click', () => {
+        onlyInBasket = !onlyInBasket;
+        inBasketBtn.classList.toggle('active', onlyInBasket);
+        renderCatalogue();
+      });
+
+      viewGridBtn?.addEventListener('click', () => {
+        grid?.classList.remove('compact-list-view');
+        viewGridBtn.classList.add('active');
+        viewListBtn?.classList.remove('active');
+      });
+
+      viewListBtn?.addEventListener('click', () => {
+        grid?.classList.add('compact-list-view');
+        viewListBtn.classList.add('active');
+        viewGridBtn?.classList.remove('active');
+      });
+
+      resetBtn?.addEventListener('click', () => {
+        currentSearch = '';
+        currentCategory = 'All Stalls';
+        currentSort = 'featured';
+        onlyInBasket = false;
+        if (searchInput) searchInput.value = '';
+        if (sortSelect) sortSelect.value = 'featured';
+        inBasketBtn?.classList.remove('active');
+        renderCategoryChips();
+        renderCatalogue();
+      });
+    }
+
+    function updateCartUI(changedItemIds = []) {
+      const listEl = document.getElementById('cartItemsList');
+      const emptyEl = document.getElementById('cartEmptyNotice');
+      const totalBadge = document.getElementById('cartTotalItemsBadge');
+      const subtotalEl = document.getElementById('liveSubtotalAmount');
+      const mobileCountEl = document.getElementById('mobileCartItemCount');
+      const mobileSubtotalEl = document.getElementById('mobileCartSubtotal');
+      const mobileModalSubtotal = document.getElementById('mobileModalSubtotal');
+      const mobileListEl = document.getElementById('mobileCartItemsList');
+
+      let liveSubtotalPaise = 0;
+      let liveTotalCount = 0;
+
+      currentItems.forEach(item => {
+        const qty = item.totalQty || 0;
+        liveTotalCount += qty;
+        liveSubtotalPaise += qty * (item.unitPrice || 0);
+      });
+
+      const formattedSubtotal = formatCurrency(liveSubtotalPaise);
+
+      if (totalBadge) totalBadge.textContent = `${liveTotalCount} Item${liveTotalCount === 1 ? '' : 's'}`;
+      if (subtotalEl) subtotalEl.textContent = formattedSubtotal;
+      if (mobileCountEl) mobileCountEl.textContent = `${liveTotalCount} Item${liveTotalCount === 1 ? '' : 's'} in Basket`;
+      if (mobileSubtotalEl) mobileSubtotalEl.textContent = formattedSubtotal;
+      if (mobileModalSubtotal) mobileModalSubtotal.textContent = formattedSubtotal;
+
+      if (currentRoom && currentRoom.threshold > 0 && liveSubtotalPaise >= currentRoom.threshold) {
+        if (!celebratedTarget) {
+          celebratedTarget = true;
+          triggerConfettiBurst(document.getElementById('deliveryRunwayContainer'));
+        }
+      } else {
+        celebratedTarget = false;
+      }
+
+      if (currentItems.length === 0) {
+        if (listEl) listEl.innerHTML = '';
+        if (mobileListEl) mobileListEl.innerHTML = '<p class="text-muted text-center py-4 small">Basket is empty.</p>';
+        emptyEl?.classList.remove('d-none');
+        return;
+      }
+      emptyEl?.classList.add('d-none');
+
+      const isClosed = currentRoom?.status === 'closed';
+      const uid = currentUser?.uid;
+
+      const renderItemHtml = (item) => {
+        const myQty = (uid && item.contributions?.[uid]) || 0;
+        const totalQty = item.totalQty || 0;
+        const lineTotal = totalQty * (item.unitPrice || 0);
+        const isChanged = changedItemIds.includes(item.id);
+        const catalogueItem = PRODUCTS.find(p => p.id === item.id);
+        const thumbUrl = catalogueItem?.image || item.image || '';
+
+        const contribPairs = Object.entries(item.contributions || {}).map(([cUid, q]) => {
+          const name = cUid === uid ? 'You' : (item.contributorNames?.[cUid] || 'Shopper');
+          return `${name}: ${q}`;
+        });
+        const contribText = contribPairs.join(' · ');
+
+        let myControlsHtml = '';
+        if (!isClosed && myQty > 0) {
+          myControlsHtml = `
+            <div class="cart-my-actions">
+              <span class="text-muted" style="font-size: 0.74rem; font-weight: 500;">Your share</span>
+              <div class="d-flex align-items-center gap-2">
+                <div class="stepper-control" style="transform: scale(0.9);">
+                  <button type="button" class="stepper-btn cart-minus-btn" data-product-id="${item.id}">−</button>
+                  <span class="stepper-val">${myQty}</span>
+                  <button type="button" class="stepper-btn cart-plus-btn" data-product-id="${item.id}" ${myQty >= 20 ? 'disabled' : ''}>+</button>
+                </div>
+                <button type="button" class="btn btn-link text-danger p-0 small cart-remove-mine-btn" data-product-id="${item.id}" title="Remove my share">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <li class="cart-item-row ${isChanged ? 'flash-updated' : ''}">
+            <div class="cart-item-main">
+              <div class="d-flex align-items-start gap-2">
+                ${thumbUrl ? `<img src="${thumbUrl}" alt="" class="cart-item-thumb" onerror="this.style.display='none'">` : ''}
+                <div>
+                  <div class="cart-item-name">${escapeHtml(item.name)}</div>
+                  <div class="cart-contributor-breakdown">${escapeHtml(contribText)}</div>
+                </div>
+              </div>
+              <div class="text-end flex-shrink-0">
+                <div class="cart-item-price">${formatCurrency(lineTotal)}</div>
+                <div class="text-muted" style="font-size: 0.74rem;">Qty: ${totalQty}</div>
+              </div>
+            </div>
+            ${myControlsHtml}
+          </li>
+        `;
+      };
+
+      const rowsHtml = currentItems.map(renderItemHtml).join('');
+      if (listEl) listEl.innerHTML = rowsHtml;
+      if (mobileListEl) mobileListEl.innerHTML = `<ul class="cart-items-list">${rowsHtml}</ul>`;
+
+      const wireCartButtons = (container) => {
+        if (!container) return;
+        container.querySelectorAll('.cart-plus-btn').forEach(btn => {
+          btn.addEventListener('click', () => changeMyQty(currentRoom.id, btn.getAttribute('data-product-id'), 1));
+        });
+        container.querySelectorAll('.cart-minus-btn').forEach(btn => {
+          btn.addEventListener('click', () => changeMyQty(currentRoom.id, btn.getAttribute('data-product-id'), -1));
+        });
+        container.querySelectorAll('.cart-remove-mine-btn').forEach(btn => {
+          btn.addEventListener('click', () => removeMine(currentRoom.id, btn.getAttribute('data-product-id')));
+        });
+      };
+
+      wireCartButtons(listEl);
+      wireCartButtons(mobileListEl);
+    }
+
+    function renderActiveRunway() {
+      if (!currentRoom) return;
+      const subtotalPaise = currentItems.reduce((sum, item) => sum + ((item.totalQty || 0) * (item.unitPrice || 0)), 0);
+      const thresholdPaise = currentRoom.threshold || 0;
+
+      const onAddGap = async (product) => {
+        if (currentRoom) await addItem(currentRoom.id, product);
+      };
+
+      renderDeliveryRunway(document.getElementById('deliveryRunwayContainer'), subtotalPaise, thresholdPaise, currentItems, onAddGap);
+      renderDeliveryRunway(document.getElementById('mobileRunwayContainer'), subtotalPaise, thresholdPaise, currentItems, onAddGap);
+    }
+
+    function renderActiveLedger() {
+      renderFairShareLedger(document.getElementById('fairShareLedgerContainer'), currentItems, currentMembers);
+      renderFairShareLedger(document.getElementById('mobileLedgerContainer'), currentItems, currentMembers);
+    }
+
+    function renderActiveActivity() {
+      renderActivityFeed(document.getElementById('activityFeedContainer'), currentActivities);
+      renderActivityFeed(document.getElementById('mobileActivityContainer'), currentActivities);
+    }
+
+    function setupInviteButtons() {
+      const codeBtn = document.getElementById('copyCodeBtn');
+      const linkBtn = document.getElementById('copyLinkBtn');
+      const codeText = document.getElementById('copyCodeText');
+      const linkText = document.getElementById('copyLinkText');
+
+      codeBtn?.addEventListener('click', () => {
+        if (currentRoom?.code) {
+          copyInviteCode(currentRoom.code);
+          if (codeText) {
+            codeText.textContent = 'Copied';
+            setTimeout(() => codeText.textContent = 'Copy', 2000);
+          }
+        }
+      });
+
+      linkBtn?.addEventListener('click', () => {
+        if (currentRoom?.code) {
+          copyInviteLink(currentRoom.code);
+          if (linkText) {
+            linkText.textContent = 'Copied';
+            setTimeout(() => linkText.textContent = 'Invite', 2000);
+          }
+        }
+      });
+    }
+
+    function setupReceiptModal() {
+      const modalEl = document.getElementById('receiptModal');
+      const modal = new bootstrap.Modal(modalEl);
+      const modalBody = document.getElementById('receiptModalBody');
+
+      const openReceipt = () => {
+        renderReceipt(modalBody, currentRoom, currentItems, currentMembers);
+        modal.show();
+      };
+
+      document.getElementById('openReceiptModalBtn')?.addEventListener('click', openReceipt);
+      document.getElementById('desktopSlipReceiptBtn')?.addEventListener('click', openReceipt);
+      document.getElementById('mobileReceiptModalTrigger')?.addEventListener('click', openReceipt);
+    }
+
+    function setupRoomManagementModal() {
+      const modalEl = document.getElementById('roomManageModal');
+      const modal = new bootstrap.Modal(modalEl);
+      const titleEl = document.getElementById('manageModalTitle');
+      const msgEl = document.getElementById('manageModalMessage');
+      const confirmBtn = document.getElementById('confirmManageActionBtn');
+
+      document.getElementById('roomManageActionBtn')?.addEventListener('click', () => {
+        if (!currentRoom) return;
+        const isOwner = currentRoom.ownerUid === currentUser?.uid;
+
+        if (isOwner) {
+          titleEl.textContent = 'Close Market Room';
+          msgEl.textContent = 'Are you sure you want to close this room? Shoppers will still be able to review the receipt, but no further items can be added.';
+          confirmBtn.textContent = 'Close Room';
+        } else {
+          titleEl.textContent = 'Leave Market Room';
+          msgEl.textContent = 'Leaving will remove your contributions from the shared basket and remove the room from your Market Desk.';
+          confirmBtn.textContent = 'Leave Room';
+        }
+        modal.show();
+      });
+
+      confirmBtn.addEventListener('click', async () => {
+        if (!currentRoom) return;
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
+
+        try {
+          const isOwner = currentRoom.ownerUid === currentUser?.uid;
+          if (isOwner) {
+            await closeRoom(currentRoom.id, currentRoom.code);
+            showToast('Room has been closed.', 'info');
+            modal.hide();
+          } else {
+            await leaveRoom(currentRoom.id);
+            showToast('Left the room.', 'info');
+            cleanupListeners();
+            window.location.href = 'dashboard.html';
+          }
+        } catch (err) {
+          console.error('Room management action failed:', err);
+          showToast(err.message || 'Action failed.', 'error');
+        } finally {
+          confirmBtn.disabled = false;
+        }
+      });
+    }
+
+    initRoom();
+  </script>
+</body>
+</html>

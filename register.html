@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — CartShare</title>
+  <meta name="description" content="Create a CartShare account to open and join shared real-time grocery shopping rooms.">
+
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="d-flex flex-column min-vh-100" style="background: var(--cream);">
+
+  <!-- Navigation Bar -->
+  <header class="market-navbar">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="brand-mark">
+        <img src="assets/images/logo.svg" alt="CartShare Basket Logo" width="34" height="34">
+        <span class="brand-name">CartShare</span>
+      </a>
+      <span class="stamp-badge stamp-marigold">NEW SHOPPER</span>
+    </div>
+  </header>
+
+  <main class="flex-grow-1 d-flex align-items-center py-4 py-md-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+          <div class="paper-card overflow-hidden shadow-dramatic" style="border: 2px solid var(--latte);">
+            <div class="row g-0 auth-two-panel">
+              
+              <!-- Left Burgundy Quote Panel with Ken Burns Effect -->
+              <div class="col-lg-5 position-relative p-4 p-md-5 d-flex flex-column justify-content-between text-white auth-left-quote overflow-hidden" style="background-color: var(--burgundy-midnight); min-height: 540px;">
+                
+                <!-- Background Image Layer with Ken Burns Drift -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25" style="z-index: 1;">
+                  <img src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=800&q=80" alt="Boutique Market" class="ken-burns-img">
+                </div>
+
+                <div class="position-relative" style="z-index: 2;">
+                  <span class="stamp-badge stamp-marigold mb-3">COLLECTIVE LIVING</span>
+                  <h3 class="font-display text-white mb-3" style="font-size: 2.1rem; line-height: 1.2;">
+                    "No more duplicate milk cartons or forgotten groceries."
+                  </h3>
+                  <p class="font-mono text-cream-light small opacity-85">
+                    Connect with your roommates or family. One shared room, one live cart, zero friction.
+                  </p>
+                </div>
+
+                <div class="position-relative pt-4 border-top border-white border-opacity-25 font-mono small d-flex justify-content-between align-items-center" style="z-index: 2;">
+                  <span>Fair Share Guaranteed</span>
+                  <span class="badge bg-warning text-dark font-mono">Instant Setup</span>
+                </div>
+              </div>
+
+              <!-- Right Form Panel -->
+              <div class="col-lg-7 p-4 p-md-5 bg-white auth-right-form">
+                <div class="mb-4">
+                  <span class="stamp-badge mb-2">JOIN THE MARKET</span>
+                  <h2 class="font-display text-burgundy-dark mb-1 fs-1">Create Account</h2>
+                  <p class="text-concrete small">Set up your shopper profile to start opening or joining group rooms.</p>
+                </div>
+
+                <!-- Error Alert Box -->
+                <div id="authAlert" class="alert alert-danger d-none font-mono small py-2" role="alert"></div>
+
+                <form id="registerForm" novalidate>
+                  <!-- Display Name -->
+                  <div class="mb-3">
+                    <label for="regName" class="form-label-custom">Full Name</label>
+                    <input type="text" class="form-control-custom" id="regName" placeholder="e.g. Asha Kumar" required autocomplete="name">
+                    <div class="form-text font-mono text-concrete" style="font-size:0.75rem;">Displayed beside your items in the room ledger.</div>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="mb-3">
+                    <label for="regEmail" class="form-label-custom">Email Address</label>
+                    <input type="email" class="form-control-custom" id="regEmail" placeholder="e.g. asha@example.com" required autocomplete="email">
+                  </div>
+
+                  <!-- Password -->
+                  <div class="mb-3">
+                    <label for="regPassword" class="form-label-custom">Password (Min 6 Characters)</label>
+                    <div class="position-relative">
+                      <input type="password" class="form-control-custom pe-5" id="regPassword" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+                      <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y text-muted border-0 bg-transparent pe-3" id="togglePasswordVisibility" aria-label="Toggle password visibility">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="mb-3">
+                    <label for="regConfirmPassword" class="form-label-custom">Confirm Password</label>
+                    <input type="password" class="form-control-custom" id="regConfirmPassword" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+                  </div>
+
+                  <!-- Submit button -->
+                  <div class="mt-4">
+                    <button type="submit" class="btn btn-burgundy w-100 font-mono btn-magnetic py-3 fs-5" id="registerSubmitBtn">
+                      <span>Create Free Account <i class="bi bi-arrow-right ms-1"></i></span>
+                    </button>
+                  </div>
+                </form>
+
+                <div class="mt-4 pt-3 border-top text-center text-concrete small font-mono">
+                  Already registered? 
+                  <a href="login.html" class="text-burgundy fw-bold text-decoration-none ms-1" id="loginLink">
+                    Sign in to your desk →
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Register Logic Script -->
+  <script type="module">
+    import { redirectIfAuthenticated, registerUser, mapAuthError } from './js/auth.js';
+    import { getParam, showToast } from './js/utils.js';
+    import { initMagneticButtons, initCustomCursor } from './js/ui-effects.js';
+
+    initCustomCursor();
+    initMagneticButtons('.btn-magnetic');
+
+    redirectIfAuthenticated();
+
+    const redirectParam = getParam('redirect');
+    const codeParam = getParam('code');
+    const loginLink = document.getElementById('loginLink');
+    if (loginLink) {
+      const qParams = new URLSearchParams();
+      if (redirectParam) qParams.set('redirect', redirectParam);
+      if (codeParam) qParams.set('code', codeParam);
+      if (qParams.toString()) {
+        loginLink.href = `login.html?${qParams.toString()}`;
+      }
+    }
+
+    const toggleBtn = document.getElementById('togglePasswordVisibility');
+    const passInput = document.getElementById('regPassword');
+    toggleBtn?.addEventListener('click', () => {
+      const isPass = passInput.getAttribute('type') === 'password';
+      passInput.setAttribute('type', isPass ? 'text' : 'password');
+      toggleBtn.innerHTML = isPass ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+    });
+
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('registerSubmitBtn');
+    const alertBox = document.getElementById('authAlert');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = passInput.value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+      if (!name || name.length < 2) {
+        alertBox.textContent = 'Please enter your full name (at least 2 characters).';
+        alertBox.classList.remove('d-none');
+        return;
+      }
+
+      if (!email) {
+        alertBox.textContent = 'Please enter a valid email address.';
+        alertBox.classList.remove('d-none');
+        return;
+      }
+
+      if (!password || password.length < 6) {
+        alertBox.textContent = 'Password must be at least 6 characters.';
+        alertBox.classList.remove('d-none');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alertBox.textContent = 'Passwords do not match.';
+        alertBox.classList.remove('d-none');
+        return;
+      }
+
+      alertBox.classList.add('d-none');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Creating profile...`;
+
+      try {
+        await registerUser(name, email, password);
+        showToast(`Welcome to CartShare, ${name}!`, 'success');
+
+        if (codeParam) {
+          window.location.href = `join.html?code=${encodeURIComponent(codeParam)}`;
+        } else if (redirectParam) {
+          window.location.href = decodeURIComponent(redirectParam);
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      } catch (err) {
+        console.error('Registration error:', err);
+        alertBox.textContent = mapAuthError(err.code || err.message);
+        alertBox.classList.remove('d-none');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Create Free Account <i class="bi bi-arrow-right ms-1"></i></span>`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "firestore.rules",
+      "README.md",
+      "FIREBASE_SETUP.md",
+      "tsconfig.json",
+      "vite.config.ts",
+      "node_modules/**",
+      "src/**"
+    ]
+  }
+}

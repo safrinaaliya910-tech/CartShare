@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — CartShare</title>
+  <meta name="description" content="Sign in to your CartShare market desk to resume your shared group carts.">
+
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="d-flex flex-column min-vh-100" style="background: var(--cream);">
+
+  <!-- Navigation Bar -->
+  <header class="market-navbar">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="brand-mark">
+        <img src="assets/images/logo.svg" alt="CartShare Basket Logo" width="34" height="34">
+        <span class="brand-name">CartShare</span>
+      </a>
+      <span class="stamp-badge stamp-marigold">MEMBERS DESK</span>
+    </div>
+  </header>
+
+  <main class="flex-grow-1 d-flex align-items-center py-4 py-md-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+          <div class="paper-card overflow-hidden shadow-dramatic" style="border: 2px solid var(--latte);">
+            <div class="row g-0 auth-two-panel">
+              
+              <!-- Left Burgundy Quote Panel with Ken Burns Effect -->
+              <div class="col-lg-5 position-relative p-4 p-md-5 d-flex flex-column justify-content-between text-white auth-left-quote overflow-hidden" style="background-color: var(--burgundy-midnight); min-height: 520px;">
+                
+                <!-- Background Image Layer with Ken Burns Drift -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25" style="z-index: 1;">
+                  <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Market Groceries" class="ken-burns-img">
+                </div>
+
+                <div class="position-relative" style="z-index: 2;">
+                  <span class="stamp-badge stamp-marigold mb-3">THE MARKET DESK</span>
+                  <h3 class="font-display text-white mb-3" style="font-size: 2.1rem; line-height: 1.2;">
+                    "Provisions taste better when planned <em class="text-marigold">together.</em>"
+                  </h3>
+                  <p class="font-mono text-cream-light small opacity-85">
+                    One unified cart for everyone who shares your kitchen, your hostel corridor, or your camping tent.
+                  </p>
+                </div>
+
+                <div class="position-relative pt-4 border-top border-white border-opacity-25 font-mono small d-flex justify-content-between align-items-center" style="z-index: 2;">
+                  <span>Verified Living Market</span>
+                  <span class="badge bg-success font-mono">100% Real-Time</span>
+                </div>
+              </div>
+
+              <!-- Right Form Panel -->
+              <div class="col-lg-7 p-4 p-md-5 bg-white auth-right-form">
+                <div class="mb-4">
+                  <span class="stamp-badge mb-2">SECURE SIGN-IN</span>
+                  <h2 class="font-display text-burgundy-dark mb-1 fs-1">Welcome Back</h2>
+                  <p class="text-concrete small">Enter your email and password to access your active rooms.</p>
+                </div>
+
+                <!-- Error Alert Box -->
+                <div id="authAlert" class="alert alert-danger d-none font-mono small py-2" role="alert"></div>
+
+                <form id="loginForm" novalidate>
+                  <!-- Email -->
+                  <div class="mb-3">
+                    <label for="loginEmail" class="form-label-custom">Account Email</label>
+                    <input type="email" class="form-control-custom" id="loginEmail" placeholder="e.g. name@hostel.edu" required autocomplete="email">
+                    <div class="invalid-feedback font-mono small" id="loginEmailFeedback">Please enter a valid email address.</div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <label for="loginPassword" class="form-label-custom">Password</label>
+                      <button type="button" class="btn btn-link p-0 text-decoration-none font-mono small text-burgundy" id="forgotPasswordBtn">
+                        Forgot Password?
+                      </button>
+                    </div>
+                    <div class="position-relative">
+                      <input type="password" class="form-control-custom pe-5" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+                      <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y text-muted border-0 bg-transparent pe-3" id="togglePasswordVisibility" aria-label="Toggle password visibility">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                    <div class="invalid-feedback font-mono small" id="loginPasswordFeedback">Please enter your password.</div>
+                  </div>
+
+                  <!-- Submit button -->
+                  <div class="mt-4">
+                    <button type="submit" class="btn btn-burgundy w-100 font-mono btn-magnetic py-3 fs-5" id="loginSubmitBtn">
+                      <span>Sign In to Market Desk <i class="bi bi-arrow-right ms-1"></i></span>
+                    </button>
+                  </div>
+                </form>
+
+                <div class="mt-4 pt-3 border-top text-center text-concrete small font-mono">
+                  Don't have a room account yet? 
+                  <a href="register.html" class="text-burgundy fw-bold text-decoration-none ms-1" id="registerLink">
+                    Register here →
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Password Reset Modal -->
+  <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content paper-card border-0">
+        <div class="modal-header border-bottom border-dashed">
+          <div>
+            <span class="stamp-badge mb-1">PASSWORD RECOVERY</span>
+            <h5 class="modal-title font-display text-burgundy-dark" id="resetModalTitle">Reset Password</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-ink small mb-3">
+            Enter your account email below. We'll send you a secure link to reset your password.
+          </p>
+          <div id="resetAlert" class="alert alert-danger d-none font-mono small py-2"></div>
+          <div id="resetSuccess" class="alert alert-success d-none font-mono small py-2"></div>
+          <div class="mb-3">
+            <label for="resetEmailInput" class="form-label-custom">Account Email</label>
+            <input type="email" class="form-control-custom" id="resetEmailInput" placeholder="name@example.com">
+          </div>
+          <button type="button" class="btn btn-burgundy w-100 font-mono" id="sendResetBtn">
+            Send Reset Instructions
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Login Logic Script -->
+  <script type="module">
+    import { redirectIfAuthenticated, loginUser, resetPassword, mapAuthError } from './js/auth.js';
+    import { getParam, showToast } from './js/utils.js';
+    import { initMagneticButtons, initCustomCursor } from './js/ui-effects.js';
+
+    initCustomCursor();
+    initMagneticButtons('.btn-magnetic');
+
+    redirectIfAuthenticated();
+
+    const redirectParam = getParam('redirect');
+    const codeParam = getParam('code');
+    const registerLink = document.getElementById('registerLink');
+    if (registerLink) {
+      const qParams = new URLSearchParams();
+      if (redirectParam) qParams.set('redirect', redirectParam);
+      if (codeParam) qParams.set('code', codeParam);
+      if (qParams.toString()) {
+        registerLink.href = `register.html?${qParams.toString()}`;
+      }
+    }
+
+    const toggleBtn = document.getElementById('togglePasswordVisibility');
+    const passInput = document.getElementById('loginPassword');
+    toggleBtn?.addEventListener('click', () => {
+      const isPass = passInput.getAttribute('type') === 'password';
+      passInput.setAttribute('type', isPass ? 'text' : 'password');
+      toggleBtn.innerHTML = isPass ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+    });
+
+    const loginForm = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('loginSubmitBtn');
+    const alertBox = document.getElementById('authAlert');
+
+    loginForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = passInput.value;
+
+      if (!email || !password) {
+        alertBox.textContent = 'Please provide both email and password.';
+        alertBox.classList.remove('d-none');
+        return;
+      }
+
+      alertBox.classList.add('d-none');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Signing in...`;
+
+      try {
+        await loginUser(email, password);
+        showToast('Signed in successfully!', 'success');
+        
+        if (codeParam) {
+          window.location.href = `join.html?code=${encodeURIComponent(codeParam)}`;
+        } else if (redirectParam) {
+          window.location.href = decodeURIComponent(redirectParam);
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        alertBox.textContent = mapAuthError(err.code || err.message);
+        alertBox.classList.remove('d-none');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Sign In to Market Desk <i class="bi bi-arrow-right ms-1"></i></span>`;
+      }
+    });
+
+    const resetModalEl = document.getElementById('resetPasswordModal');
+    const resetModal = new bootstrap.Modal(resetModalEl);
+    document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => {
+      document.getElementById('resetEmailInput').value = document.getElementById('loginEmail').value;
+      document.getElementById('resetAlert').classList.add('d-none');
+      document.getElementById('resetSuccess').classList.add('d-none');
+      resetModal.show();
+    });
+
+    document.getElementById('sendResetBtn')?.addEventListener('click', async () => {
+      const email = document.getElementById('resetEmailInput').value.trim();
+      const resetAlert = document.getElementById('resetAlert');
+      const resetSuccess = document.getElementById('resetSuccess');
+
+      if (!email) {
+        resetAlert.textContent = 'Please enter your account email.';
+        resetAlert.classList.remove('d-none');
+        return;
+      }
+
+      try {
+        await resetPassword(email);
+        resetAlert.classList.add('d-none');
+        resetSuccess.textContent = 'Password reset email sent! Check your inbox.';
+        resetSuccess.classList.remove('d-none');
+      } catch (err) {
+        resetSuccess.classList.add('d-none');
+        resetAlert.textContent = mapAuthError(err.code || err.message);
+        resetAlert.classList.remove('d-none');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Market Room — CartShare</title>
+  <meta name="description" content="Join a shared CartShare shopping room using an invite code.">
+
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="d-flex flex-column min-vh-100" style="background: var(--cream);">
+
+  <!-- Navigation Bar -->
+  <header class="market-navbar">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="brand-mark">
+        <img src="assets/images/logo.svg" alt="CartShare Basket Logo" width="34" height="34">
+        <span class="brand-name">CartShare</span>
+      </a>
+      <a href="dashboard.html" class="btn btn-outline-burgundy btn-sm font-mono btn-magnetic">
+        <i class="bi bi-arrow-left me-1"></i> Market Desk
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-grow-1 d-flex align-items-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          
+          <div class="paper-card p-4 p-md-5 shadow-dramatic tilt-card" style="border: 2px solid var(--latte); background: var(--paper-white);">
+            <div class="text-center mb-4">
+              <span class="stamp-badge stamp-marigold mb-2">INVITATION TICKET</span>
+              <h2 class="font-display text-burgundy-dark mb-1 fs-1">Enter Shared Room</h2>
+              <p class="text-concrete small">Verify the invite code to join your flatmates' shared grocery basket.</p>
+            </div>
+
+            <!-- Error Notice -->
+            <div id="joinAlert" class="alert alert-danger d-none font-mono small py-2 mb-3" role="alert"></div>
+
+            <!-- Code Input Form -->
+            <form id="joinLookupForm" class="mb-4">
+              <div class="mb-3">
+                <label for="joinCodeInput" class="form-label-custom text-center d-block">Room Invite Code</label>
+                <input type="text" class="form-control-custom form-control-mono fs-2 text-center py-3 fw-bold" id="joinCodeInput" placeholder="CS-7K29" maxlength="7" required autocomplete="off" style="letter-spacing: 0.15em;">
+                <div class="form-text font-mono text-center text-concrete" style="font-size:0.75rem;">
+                  Codes look like CS-7K29 (or simply type 7K29)
+                </div>
+              </div>
+              <button type="submit" class="btn btn-burgundy w-100 font-mono btn-magnetic py-3 fs-5" id="lookupCodeBtn">
+                <span>Check Invite Code <i class="bi bi-search ms-1"></i></span>
+              </button>
+            </form>
+
+            <!-- Room Preview Card (Hidden until code verified) -->
+            <div id="roomPreviewCard" class="paper-surface p-4 mb-4 d-none" style="border: 2px dashed var(--accent-marigold); background: #FAF7F0;">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="stamp-badge stamp-sage" style="font-size:0.7rem;">ROOM FOUND</span>
+                <span class="font-mono small text-concrete fw-bold" id="previewRoomCode">CS-XXXX</span>
+              </div>
+              <h3 class="font-display text-burgundy-dark mb-1 fs-3" id="previewRoomName">Room Name</h3>
+              <p class="text-ink small mb-4">You will be added as a room member with your own contribution ledger.</p>
+              
+              <button type="button" class="btn btn-marigold w-100 font-mono fw-bold btn-magnetic py-3 fs-5" id="confirmJoinBtn">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Confirm & Enter Basket
+              </button>
+            </div>
+
+            <div class="text-center font-mono small text-concrete pt-3 border-top border-dashed">
+              Don't have a code? Ask your group host or <a href="dashboard.html" class="text-burgundy fw-bold">open your own room</a>.
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Join Room Module Script -->
+  <script type="module">
+    import { requireAuth } from './js/auth.js';
+    import { lookupRoomCode, joinRoomByCode } from './js/rooms.js';
+    import { getParam, normalizeRoomCode, showToast } from './js/utils.js';
+    import { initCustomCursor, initTilt, initMagneticButtons } from './js/ui-effects.js';
+
+    initCustomCursor();
+    initTilt('.tilt-card', 8);
+    initMagneticButtons('.btn-magnetic');
+
+    let verifiedRoomData = null;
+
+    async function initJoinPage() {
+      const user = await requireAuth();
+      if (!user) return;
+
+      const codeInput = document.getElementById('joinCodeInput');
+      const lookupForm = document.getElementById('joinLookupForm');
+      const lookupBtn = document.getElementById('lookupCodeBtn');
+      const alertBox = document.getElementById('joinAlert');
+      const previewCard = document.getElementById('roomPreviewCard');
+      const previewName = document.getElementById('previewRoomName');
+      const previewCode = document.getElementById('previewRoomCode');
+      const confirmBtn = document.getElementById('confirmJoinBtn');
+
+      const prefillCode = getParam('code');
+      if (prefillCode) {
+        codeInput.value = normalizeRoomCode(prefillCode);
+        runLookup(codeInput.value);
+      }
+
+      lookupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        runLookup(codeInput.value);
+      });
+
+      async function runLookup(rawCode) {
+        alertBox.classList.add('d-none');
+        previewCard.classList.add('d-none');
+        lookupBtn.disabled = true;
+        lookupBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Searching room...`;
+
+        try {
+          const roomData = await lookupRoomCode(rawCode);
+          verifiedRoomData = roomData;
+
+          previewName.textContent = roomData.roomName;
+          previewCode.textContent = roomData.code;
+          previewCard.classList.remove('d-none');
+        } catch (err) {
+          console.error('Lookup failed:', err);
+          alertBox.textContent = err.message || 'Could not find that room code.';
+          alertBox.classList.remove('d-none');
+        } finally {
+          lookupBtn.disabled = false;
+          lookupBtn.innerHTML = `<span>Check Invite Code <i class="bi bi-search ms-1"></i></span>`;
+        }
+      }
+
+      confirmBtn.addEventListener('click', async () => {
+        if (!verifiedRoomData) return;
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Joining room...`;
+
+        try {
+          const roomId = await joinRoomByCode(verifiedRoomData.code);
+          showToast(`Joined "${verifiedRoomData.roomName}"!`, 'success');
+          window.location.href = `room.html?room=${roomId}`;
+        } catch (err) {
+          console.error('Join failed:', err);
+          alertBox.textContent = err.message || 'Failed to enter the room.';
+          alertBox.classList.remove('d-none');
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = `<i class="bi bi-box-arrow-in-right me-1"></i> Confirm & Enter Basket`;
+        }
+      });
+    }
+
+    initJoinPage();
+  </script>
+</body>
+</html>
