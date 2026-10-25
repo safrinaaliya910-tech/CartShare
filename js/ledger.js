@@ -1,13 +1,9 @@
-/**
- * @file ledger.js
- * @description Fair Share Ledger — calculates and displays each member's contributions
- * to the shared basket, percentage breakdown, and mathematical reconciliation.
- */
+
 
 import { escapeHtml, formatCurrency, getAvatarColor, getInitials } from './utils.js';
 
 /**
- * Computes individual member contributions from live items snapshot
+ 
  * @param {Array<any>} items 
  * @param {Array<any>} members 
  * @returns {Object}
@@ -15,7 +11,7 @@ import { escapeHtml, formatCurrency, getAvatarColor, getInitials } from './utils
 export function calculateLedger(items = [], members = []) {
   const memberMap = new Map();
 
-  // Populate known members first
+  
   members.forEach(m => {
     memberMap.set(m.id || m.uid, {
       uid: m.id || m.uid,
@@ -30,7 +26,7 @@ export function calculateLedger(items = [], members = []) {
   let groupSubtotalPaise = 0;
   let groupItemCount = 0;
 
-  // Aggregate contributions across items
+  
   items.forEach(item => {
     const unitPrice = item.unitPrice || 0;
     const contributions = item.contributions || {};
@@ -59,7 +55,7 @@ export function calculateLedger(items = [], members = []) {
     });
   });
 
-  // Calculate percentage shares
+  
   const memberList = Array.from(memberMap.values()).map(m => {
     m.percentage = groupSubtotalPaise > 0
       ? Math.round((m.totalPaise / groupSubtotalPaise) * 100)
@@ -67,7 +63,7 @@ export function calculateLedger(items = [], members = []) {
     return m;
   }).sort((a, b) => b.totalPaise - a.totalPaise);
 
-  // Reconcile and assert that member sum equals group subtotal
+  
   const reconciledSum = memberList.reduce((acc, m) => acc + m.totalPaise, 0);
   if (reconciledSum !== groupSubtotalPaise) {
     console.warn(`Ledger reconciliation mismatch: member sum (${reconciledSum}) != group subtotal (${groupSubtotalPaise})`);
@@ -82,7 +78,7 @@ export function calculateLedger(items = [], members = []) {
 }
 
 /**
- * Renders Fair Share Ledger into container
+ 
  * @param {HTMLElement} containerEl 
  * @param {Array<any>} items 
  * @param {Array<any>} members 

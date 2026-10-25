@@ -1,10 +1,3 @@
-/**
- * @file cart.js
- * @description Real-time transactional operations on the shared shopping cart.
- * Enforces per-member quantity limits (max 20), Smart Merge consolidation,
- * and isolated contribution updates.
- */
-
 import { db, auth, isConfigured } from './firebase-config.js';
 import {
   collection,
@@ -16,15 +9,8 @@ import { showToast } from './utils.js';
 
 export const MAX_MEMBER_QTY = 20;
 
-// Flag to guard against rapid double-clicks while transactions run
 let isTransactionPending = false;
 
-/**
- * Adds 1 unit of a product to the user's contribution in the shared cart
- * @param {string} roomId 
- * @param {any} product 
- * @returns {Promise<boolean>}
- */
 export async function addItem(roomId, product) {
   if (isTransactionPending) return false;
   if (!isConfigured() || !auth.currentUser) {
@@ -60,7 +46,6 @@ export async function addItem(roomId, product) {
       let newTotalQty = 0;
 
       if (!itemSnap.exists()) {
-        // First addition of this product to shared cart
         const contributions = { [myUid]: 1 };
         const contributorNames = { [myUid]: displayName };
         newTotalQty = 1;
@@ -90,7 +75,6 @@ export async function addItem(roomId, product) {
           createdAt: serverTimestamp()
         });
       } else {
-        // Smart Merge: item already in basket
         const data = itemSnap.data();
         const contributions = { ...(data.contributions || {}) };
         const contributorNames = { ...(data.contributorNames || {}) };
@@ -130,7 +114,6 @@ export async function addItem(roomId, product) {
         });
       }
 
-      // Update room denormalized subtotal & count
       const currentRoomData = roomSnap.data();
       const subtotalDelta = newLineTotal - oldLineTotal;
       const countDelta = newTotalQty - oldTotalQty;
@@ -157,13 +140,6 @@ export async function addItem(roomId, product) {
   }
 }
 
-/**
- * Changes caller's contribution quantity by delta (+1 or -1)
- * @param {string} roomId 
- * @param {string} productId 
- * @param {number} delta 
- * @returns {Promise<boolean>}
- */
 export async function changeMyQty(roomId, productId, delta) {
   if (isTransactionPending) return false;
   if (!isConfigured() || !auth.currentUser) return false;
@@ -203,7 +179,6 @@ export async function changeMyQty(roomId, productId, delta) {
       let newLineTotal = 0;
 
       if (nextMyQty <= 0) {
-        // Remove caller's contribution
         delete contributions[myUid];
         delete contributorNames[myUid];
 
@@ -211,7 +186,6 @@ export async function changeMyQty(roomId, productId, delta) {
         newLineTotal = newTotalQty * unitPrice;
 
         if (newTotalQty <= 0) {
-          // If no other members contributed, remove item document entirely
           transaction.delete(itemRef);
         } else {
           transaction.update(itemRef, {
@@ -233,7 +207,6 @@ export async function changeMyQty(roomId, productId, delta) {
           createdAt: serverTimestamp()
         });
       } else {
-        // Update caller's contribution
         contributions[myUid] = nextMyQty;
         contributorNames[myUid] = displayName;
 
@@ -259,7 +232,6 @@ export async function changeMyQty(roomId, productId, delta) {
         });
       }
 
-      // Update room denormalized subtotal
       const currentRoomData = roomSnap.data();
       const subtotalDelta = newLineTotal - oldLineTotal;
       const countDelta = newTotalQty - oldTotalQty;
@@ -281,12 +253,6 @@ export async function changeMyQty(roomId, productId, delta) {
   }
 }
 
-/**
- * Removes all units of a product contributed by caller
- * @param {string} roomId 
- * @param {string} productId 
- * @returns {Promise<boolean>}
- */
 export async function removeMine(roomId, productId) {
   if (isTransactionPending) return false;
   if (!isConfigured() || !auth.currentUser) return false;

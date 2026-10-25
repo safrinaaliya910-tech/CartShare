@@ -1,27 +1,15 @@
-/**
- * @file app.js
- * @description Main application bootstrapper.
- * Manages global navbar auth state, setup warning banners, and landing page interactions.
- */
-
 import { auth, isConfigured, renderSetupWarningIfUnconfigured } from './firebase-config.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { showToast } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Show setup warning if Firebase credentials are placeholder
   renderSetupWarningIfUnconfigured();
 
-  // 2. Global navbar authentication state synchronization
   syncNavbarAuth();
 
-  // 3. Landing page interactive elements
   initLandingInteractions();
 });
 
-/**
- * Updates navbar buttons depending on whether a user is logged in
- */
 function syncNavbarAuth() {
   const authNavGuest = document.getElementById('navGuestActions');
   const authNavUser = document.getElementById('navUserActions');
@@ -43,11 +31,7 @@ function syncNavbarAuth() {
   });
 }
 
-/**
- * Initializes landing page specific UI enhancements
- */
 function initLandingInteractions() {
-  // Sample invite ticket click to copy
   const sampleTicket = document.getElementById('sampleInviteTicket');
   if (sampleTicket) {
     sampleTicket.addEventListener('click', () => {
@@ -56,7 +40,6 @@ function initLandingInteractions() {
     });
   }
 
-  // Smooth scroll for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
@@ -70,7 +53,6 @@ function initLandingInteractions() {
     });
   });
 
-  // Staggered reveal for ledger step rows
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

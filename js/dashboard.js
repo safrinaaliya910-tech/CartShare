@@ -1,10 +1,3 @@
-/**
- * @file dashboard.js
- * @description Logic for the Market Desk (dashboard.html):
- * displays user's joined rooms with live subtotal/status, create room modal,
- * and quick code-join form.
- */
-
 import { auth, db, isConfigured } from './firebase-config.js';
 import { requireAuth, logoutUser } from './auth.js';
 import { createRoom, joinRoomByCode } from './rooms.js';
@@ -22,25 +15,20 @@ import {
 let roomDocListeners = new Map();
 let userRoomsUnsub = null;
 
-/**
- * Initializes the Market Desk page
- */
 export async function initDashboard() {
   const user = await requireAuth();
   if (!user) return;
 
-  // Render greeting with time-of-day wording
   const greetingEl = document.getElementById('userGreeting');
   if (greetingEl) {
     const hour = new Date().getHours();
     let timeOfDay = 'Good morning';
     if (hour >= 12 && hour < 17) timeOfDay = 'Good afternoon';
     else if (hour >= 17) timeOfDay = 'Good evening';
-    
+
     greetingEl.textContent = `${timeOfDay}, ${user.displayName || 'Market Shopper'}`;
   }
 
-  // Setup logout buttons
   const logoutBtns = document.querySelectorAll('.logout-btn');
   logoutBtns.forEach(btn => {
     btn.addEventListener('click', async (e) => {
@@ -50,20 +38,13 @@ export async function initDashboard() {
     });
   });
 
-  // Setup Create Room form modal
   setupCreateRoomModal();
 
-  // Setup Quick Join Form
   setupQuickJoinForm();
 
-  // Subscribe to user's rooms
   subscribeUserRooms(user.uid);
 }
 
-/**
- * Subscribes to rooms associated with this user
- * @param {string} uid 
- */
 function subscribeUserRooms(uid) {
   if (!isConfigured()) return;
 
@@ -92,7 +73,6 @@ function subscribeUserRooms(uid) {
 
     renderRoomsSkeleton(roomsListEl, userRooms);
 
-    // Attach individual live listeners to rooms/{roomId} for real-time subtotal & member updates
     userRooms.forEach(room => {
       if (!roomDocListeners.has(room.id)) {
         const rUnsub = onSnapshot(doc(db, "rooms", room.id), (rSnap) => {
@@ -102,6 +82,7 @@ function subscribeUserRooms(uid) {
         }, (err) => {
           console.warn(`Could not sync room ${room.id}:`, err);
         });
+
         roomDocListeners.set(room.id, rUnsub);
       }
     });
@@ -110,11 +91,6 @@ function subscribeUserRooms(uid) {
   });
 }
 
-/**
- * Renders the ledger rows for user's rooms
- * @param {HTMLElement} container 
- * @param {Array<any>} rooms 
- */
 function renderRoomsSkeleton(container, rooms) {
   if (!container) return;
 
@@ -149,11 +125,12 @@ function renderRoomsSkeleton(container, rooms) {
     </div>
   `).join('');
 
-  // Handle click to update lastOpenedAt
   const enterBtns = container.querySelectorAll('.enter-room-btn');
+
   enterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const rId = btn.getAttribute('data-room-id');
+
       if (rId && auth.currentUser) {
         updateDoc(doc(db, `users/${auth.currentUser.uid}/rooms`, rId), {
           lastOpenedAt: serverTimestamp()
@@ -163,11 +140,6 @@ function renderRoomsSkeleton(container, rooms) {
   });
 }
 
-/**
- * Updates an individual room card when live room snapshot arrives
- * @param {string} roomId 
- * @param {Object} roomData 
- */
 function updateRoomListItem(roomId, roomData) {
   const subtotalEl = document.getElementById(`val-subtotal-${roomId}`);
   const membersEl = document.getElementById(`meta-members-${roomId}`);
@@ -176,10 +148,12 @@ function updateRoomListItem(roomId, roomData) {
   if (subtotalEl) {
     subtotalEl.textContent = formatCurrency(roomData.subtotal || 0);
   }
+
   if (membersEl) {
     const count = roomData.memberCount || 1;
     membersEl.textContent = `${count} member${count === 1 ? '' : 's'}`;
   }
+
   if (statusEl) {
     if (roomData.status === 'closed') {
       statusEl.className = 'stamp-badge stamp-closed';
@@ -191,9 +165,6 @@ function updateRoomListItem(roomId, roomData) {
   }
 }
 
-/**
- * Setup modal for creating a new room
- */
 function setupCreateRoomModal() {
   const form = document.getElementById('createRoomForm');
   if (!form) return;
@@ -202,6 +173,7 @@ function setupCreateRoomModal() {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const nameInput = document.getElementById('roomNameInput');
     const thresholdInput = document.getElementById('deliveryThresholdInput');
     const errorEl = document.getElementById('createRoomError');
@@ -227,16 +199,17 @@ function setupCreateRoomModal() {
 
     try {
       if (errorEl) errorEl.classList.add('d-none');
+
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Creating...`;
 
       const newRoomId = await createRoom(name, thresholdRupees);
       showToast("Room opened successfully!", "success");
 
-      // Redirect into room
       window.location.href = `room.html?room=${newRoomId}&new=1`;
     } catch (err) {
       console.error("Create room failed:", err);
+
       if (errorEl) {
         errorEl.textContent = err.message || "Failed to create room.";
         errorEl.classList.remove('d-none');
@@ -248,9 +221,6 @@ function setupCreateRoomModal() {
   });
 }
 
-/**
- * Setup inline join by invite code
- */
 function setupQuickJoinForm() {
   const form = document.getElementById('quickJoinForm');
   if (!form) return;
@@ -261,18 +231,22 @@ function setupQuickJoinForm() {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const rawCode = input.value.trim();
 
     try {
       if (errorEl) errorEl.classList.add('d-none');
+
       btn.disabled = true;
       btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Entering...`;
 
       const roomId = await joinRoomByCode(rawCode);
       showToast("Joined room successfully!", "success");
+
       window.location.href = `room.html?room=${roomId}`;
     } catch (err) {
       console.error("Join room failed:", err);
+
       if (errorEl) {
         errorEl.textContent = err.message || "Unable to join room.";
         errorEl.classList.remove('d-none');

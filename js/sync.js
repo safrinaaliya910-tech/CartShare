@@ -1,9 +1,3 @@
-/**
- * @file sync.js
- * @description Manages real-time Firestore listeners (onSnapshot) for the room,
- * tracks member list, cart items, and activity feed, and handles clean unsubscription.
- */
-
 import { db, auth, isConfigured } from './firebase-config.js';
 import {
   collection,
@@ -17,19 +11,12 @@ import {
 let activeUnsubscribers = [];
 let prevItemVersions = new Map();
 
-/**
- * Registers an unsubscribe callback to be cleared on teardown
- * @param {Function} unsub 
- */
 export function registerUnsubscribe(unsub) {
   if (typeof unsub === 'function') {
     activeUnsubscribers.push(unsub);
   }
 }
 
-/**
- * Cleans up all active Firestore listeners
- */
 export function cleanupListeners() {
   while (activeUnsubscribers.length > 0) {
     const unsub = activeUnsubscribers.pop();
@@ -42,16 +29,6 @@ export function cleanupListeners() {
   prevItemVersions.clear();
 }
 
-/**
- * Attaches real-time subscriptions for the shared room
- * @param {string} roomId 
- * @param {Object} callbacks 
- * @param {Function} callbacks.onRoomUpdate
- * @param {Function} callbacks.onMembersUpdate
- * @param {Function} callbacks.onItemsUpdate
- * @param {Function} callbacks.onActivityUpdate
- * @param {Function} callbacks.onError
- */
 export function subscribeToRoom(roomId, {
   onRoomUpdate,
   onMembersUpdate,
@@ -61,7 +38,6 @@ export function subscribeToRoom(roomId, {
 }) {
   if (!isConfigured() || !roomId) return;
 
-  // 1. Subscribe to Room document
   const roomRef = doc(db, "rooms", roomId);
   const roomUnsub = onSnapshot(roomRef, (snapshot) => {
     if (!snapshot.exists()) {
@@ -76,7 +52,6 @@ export function subscribeToRoom(roomId, {
   });
   registerUnsubscribe(roomUnsub);
 
-  // 2. Subscribe to Members collection
   const membersRef = collection(db, `rooms/${roomId}/members`);
   const membersUnsub = onSnapshot(membersRef, (snapshot) => {
     const members = [];
@@ -103,7 +78,6 @@ export function subscribeToRoom(roomId, {
   });
   registerUnsubscribe(membersUnsub);
 
-  // 3. Subscribe to Shared Cart Items
   const itemsRef = collection(db, `rooms/${roomId}/items`);
   const itemsUnsub = onSnapshot(itemsRef, (snapshot) => {
     const items = [];
@@ -112,7 +86,6 @@ export function subscribeToRoom(roomId, {
 
     snapshot.docChanges().forEach((change) => {
       const data = change.doc.data();
-      // If updated by someone else, mark for sage flash animation
       if (change.type === 'modified' && data.lastUpdatedBy && data.lastUpdatedBy !== currentUid) {
         changedItemIds.push(change.doc.id);
       }
@@ -129,7 +102,6 @@ export function subscribeToRoom(roomId, {
   });
   registerUnsubscribe(itemsUnsub);
 
-  // 4. Subscribe to Activity stream (last 50, newest first)
   const activityQuery = query(
     collection(db, `rooms/${roomId}/activity`),
     orderBy("createdAt", "desc"),
@@ -148,10 +120,6 @@ export function subscribeToRoom(roomId, {
   registerUnsubscribe(activityUnsub);
 }
 
-/**
- * Sets up online/offline status tracking on the window
- * @param {HTMLElement} indicatorEl 
- */
 export function initConnectionTracker(indicatorEl) {
   if (!indicatorEl) return;
 
@@ -175,6 +143,5 @@ export function initConnectionTracker(indicatorEl) {
   };
 }
 
-// Clean up listeners on page unload
 window.addEventListener('beforeunload', cleanupListeners);
 window.addEventListener('pagehide', cleanupListeners);

@@ -1,13 +1,10 @@
-/**
- * @file receipt.js
- * @description Generates the printable "Shopping Summary" receipt modal and handles printing.
- */
+
 
 import { escapeHtml, formatCurrency } from './utils.js';
 import { calculateLedger } from './ledger.js';
 
 /**
- * Renders the printable receipt within a Bootstrap modal
+ 
  * @param {HTMLElement} containerEl 
  * @param {Object} room 
  * @param {Array<any>} items 
@@ -34,7 +31,7 @@ export function renderReceipt(containerEl, room = {}, items = [], members = []) 
   const thresholdPaise = room.threshold || 0;
   const deliveryChargePaise = room.deliveryCharge || 0;
 
-  // Delivery charge rule
+  
   let appliedDeliveryPaise = 0;
   let deliveryLabel = "₹0 (Not applicable)";
 
@@ -55,7 +52,7 @@ export function renderReceipt(containerEl, room = {}, items = [], members = []) 
   const finalTotalPaise = subtotalPaise + appliedDeliveryPaise;
   const ledger = calculateLedger(items, members);
 
-  // Table rows
+  
   let itemsTableRows = '';
   if (items.length === 0) {
     itemsTableRows = `
@@ -84,7 +81,7 @@ export function renderReceipt(containerEl, room = {}, items = [], members = []) 
     }).join('');
   }
 
-  // Fair share breakdown rows
+  
   const ledgerBreakdownRows = ledger.members.map(m => {
     return `
       <div class="d-flex justify-content-between py-1" style="font-size:0.82rem;">
@@ -159,7 +156,7 @@ export function renderReceipt(containerEl, room = {}, items = [], members = []) 
     </div>
   `;
 
-  // Attach print button handler
+  
   const printBtn = containerEl.querySelector('#printReceiptBtn');
   if (printBtn) {
     printBtn.addEventListener('click', () => {

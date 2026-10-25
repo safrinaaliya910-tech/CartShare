@@ -1,15 +1,10 @@
-/**
- * @file firebase-config.js
- * @description Initializes Firebase modular SDK v10 via CDN.
- * Contains configuration object with helpful detection for placeholder values.
- */
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// REPLACE THESE WITH YOUR OWN FIREBASE PROJECT CONFIGURATION
-// Find these in Firebase Console -> Project Settings -> General -> Your apps -> Web app
+
 const firebaseConfig = {
   apiKey: "AIzaSyAp3Dnb5NiDJmZkE667wEyZQChTCqAqSxQ",
   authDomain: "cart-share-92744.firebaseapp.com",
@@ -55,9 +50,7 @@ export const auth = authInstance;
 export const db = dbInstance;
 export const config = firebaseConfig;
 
-/**
- * Helper to display a friendly setup banner when Firebase is not configured.
- */
+
 export function renderSetupWarningIfUnconfigured() {
   if (isConfigured()) return;
 

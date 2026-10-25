@@ -1,9 +1,4 @@
-/**
- * @file products.js
- * @description Curated "The Stalls" product catalogue for CartShare.
- * Contains 38 realistic everyday grocery items across 7 categories.
- * All prices stored in integer paise (1 Rupee = 100 Paise).
- */
+
 
 export const CATEGORIES = [
   "All Stalls",
@@ -405,7 +400,7 @@ export const PRODUCTS = [
 ];
 
 /**
- * Filter and sort products according to user controls
+ 
  * @param {string} query 
  * @param {string} category 
  * @param {string} sortBy 
@@ -440,7 +435,7 @@ export function filterProducts(query = '', category = 'All Stalls', sortBy = 'fe
 }
 
 /**
- * Look up a product by stable product ID
+ 
  * @param {string} id 
  * @returns {any|null}
  */

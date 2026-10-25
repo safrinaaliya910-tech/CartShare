@@ -1,19 +1,6 @@
-/**
- * @file runway.js
- * @description Delivery Runway component — visual progress ruler tracking basket subtotal
- * against delivery waiver target, with gap-filling catalogue suggestions.
- */
-
 import { escapeHtml, formatCurrency } from './utils.js';
 import { PRODUCTS } from './products.js';
 
-/**
- * Calculates runway status and recommendations
- * @param {number} subtotalPaise 
- * @param {number} thresholdPaise 
- * @param {Array<any>} cartItems 
- * @returns {Object}
- */
 export function calculateRunwayData(subtotalPaise, thresholdPaise, cartItems = []) {
   if (!thresholdPaise || thresholdPaise <= 0) {
     return {
@@ -30,10 +17,8 @@ export function calculateRunwayData(subtotalPaise, thresholdPaise, cartItems = [
   const isReached = subtotal >= thresholdPaise;
   const percentage = Math.min(100, Math.round((subtotal / thresholdPaise) * 100));
 
-  // Determine existing categories in cart to prioritize fresh categories
   const cartCategories = new Set(cartItems.map(i => i.category));
 
-  // Pick up to 3 catalogue suggestions that fit the remaining gap
   let suggestions = [];
   if (remainingPaise > 0) {
     suggestions = PRODUCTS
@@ -43,7 +28,6 @@ export function calculateRunwayData(subtotalPaise, thresholdPaise, cartItems = [
         const bNewCat = !cartCategories.has(b.category);
         if (aNewCat && !bNewCat) return -1;
         if (!aNewCat && bNewCat) return 1;
-        // Closest to filling the gap
         return b.priceInPaise - a.priceInPaise;
       })
       .slice(0, 3);
@@ -58,14 +42,6 @@ export function calculateRunwayData(subtotalPaise, thresholdPaise, cartItems = [
   };
 }
 
-/**
- * Renders the Delivery Runway into a target DOM container
- * @param {HTMLElement} containerEl 
- * @param {number} subtotalPaise 
- * @param {number} thresholdPaise 
- * @param {Array<any>} cartItems 
- * @param {Function} onAddSuggestion 
- */
 export function renderDeliveryRunway(containerEl, subtotalPaise, thresholdPaise, cartItems = [], onAddSuggestion) {
   if (!containerEl) return;
 
@@ -92,7 +68,6 @@ export function renderDeliveryRunway(containerEl, subtotalPaise, thresholdPaise,
     ? `You've reached the ${formatCurrency(thresholdPaise)} target.`
     : `${formatCurrency(runway.remainingPaise)} more to reach the delivery target.`;
 
-  // Render gap suggestions
   let suggestionsHtml = '';
   if (runway.suggestions.length > 0 && !runway.isReached) {
     suggestionsHtml = `
@@ -126,14 +101,12 @@ export function renderDeliveryRunway(containerEl, subtotalPaise, thresholdPaise,
         <span>Target: <strong class="text-burgundy-dark">${formatCurrency(thresholdPaise)}</strong></span>
       </div>
 
-      <!-- Ruler Track -->
       <div class="runway-track-wrap" role="progressbar" aria-valuenow="${runway.percentage}" aria-valuemin="0" aria-valuemax="100" aria-label="Delivery threshold progress">
         <div class="runway-fill ${runway.isReached ? 'completed' : ''}" style="width: ${runway.percentage}%"></div>
         <div class="runway-marker" style="left: ${runway.percentage}%" title="Current progress: ${runway.percentage}%">
           <i class="bi bi-basket2"></i>
         </div>
 
-        <!-- Tick marks -->
         <span class="runway-tick-line" style="left: 25%"></span>
         <span class="runway-tick" style="left: 25%">25%</span>
         <span class="runway-tick-line" style="left: 50%"></span>
@@ -149,7 +122,6 @@ export function renderDeliveryRunway(containerEl, subtotalPaise, thresholdPaise,
     </div>
   `;
 
-  // Attach suggestion click listeners
   if (onAddSuggestion) {
     const buttons = containerEl.querySelectorAll('.add-suggestion-btn');
     buttons.forEach(btn => {

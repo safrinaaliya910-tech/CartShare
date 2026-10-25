@@ -1,8 +1,4 @@
-/**
- * @file rooms.js
- * @description Manages shared shopping rooms: atomic creation, joining with unique code,
- * leaving, closing, and invite sharing.
- */
+
 
 import { db, auth, isConfigured } from './firebase-config.js';
 import {
@@ -18,11 +14,9 @@ import {
 import { normalizeRoomCode, rupeesToPaise, showToast } from './utils.js';
 import { resolveDisplayName } from './auth.js';
 
-// Alphabet without ambiguous glyphs: excludes 0, O, 1, I, L
 const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 
 /**
- * Generates random 4-character suffix from unambiguous alphabet
  * @returns {string}
  */
 function generateCodeSuffix() {
@@ -34,7 +28,6 @@ function generateCodeSuffix() {
 }
 
 /**
- * Atomically creates a new room with a collision-free invite code
  * @param {string} roomName
  * @param {number} thresholdRupees
  * @param {number} deliveryChargeRupees
@@ -68,7 +61,6 @@ export async function createRoom(roomName, thresholdRupees = 500, deliveryCharge
           return null;
         }
 
-        // 1. Reserve code doc
         transaction.set(codeRef, {
           roomId: roomId,
           roomName: roomName.trim(),
@@ -77,7 +69,6 @@ export async function createRoom(roomName, thresholdRupees = 500, deliveryCharge
           createdAt: serverTimestamp()
         });
 
-        // 2. Set room document
         transaction.set(newRoomRef, {
           name: roomName.trim(),
           code: candidateCode,
@@ -92,7 +83,6 @@ export async function createRoom(roomName, thresholdRupees = 500, deliveryCharge
           updatedAt: serverTimestamp()
         });
 
-        // 3. Add owner as first member
         const memberRef = doc(db, `rooms/${roomId}/members`, currentUser.uid);
         transaction.set(memberRef, {
           uid: currentUser.uid,
@@ -101,7 +91,6 @@ export async function createRoom(roomName, thresholdRupees = 500, deliveryCharge
           joinedAt: serverTimestamp()
         });
 
-        // 4. Record room under user's profile
         const userRoomRef = doc(db, `users/${currentUser.uid}/rooms`, roomId);
         transaction.set(userRoomRef, {
           roomId: roomId,
@@ -112,7 +101,6 @@ export async function createRoom(roomName, thresholdRupees = 500, deliveryCharge
           lastOpenedAt: serverTimestamp()
         });
 
-        // 5. Initial activity doc
         const activityRef = doc(collection(db, `rooms/${roomId}/activity`));
         transaction.set(activityRef, {
           type: "create",
@@ -138,7 +126,6 @@ export async function createRoom(roomName, thresholdRupees = 500, deliveryCharge
 }
 
 /**
- * Look up room details from an invite code before joining
  * @param {string} rawCode
  * @returns {Promise<any>}
  */
@@ -162,7 +149,6 @@ export async function lookupRoomCode(rawCode) {
 }
 
 /**
- * Joins a room using an invite code
  * @param {string} rawCode
  * @returns {Promise<string>} roomId
  */
@@ -180,14 +166,12 @@ export async function joinRoomByCode(rawCode) {
   const memberSnap = await getDoc(memberRef);
 
   if (memberSnap.exists()) {
-    // Already a member, update last opened time and enter
     await updateDoc(doc(db, `users/${currentUser.uid}/rooms`, roomId), {
       lastOpenedAt: serverTimestamp()
     }).catch(() => {});
     return roomId;
   }
 
-  // Atomically join the room
   await runTransaction(db, async (transaction) => {
     const roomRef = doc(db, "rooms", roomId);
     const roomSnap = await transaction.get(roomRef);
@@ -197,7 +181,6 @@ export async function joinRoomByCode(rawCode) {
     }
     const currentMemberCount = roomSnap.data().memberCount || 1;
 
-    // Add member record
     transaction.set(memberRef, {
       uid: currentUser.uid,
       displayName: displayName,
@@ -205,13 +188,11 @@ export async function joinRoomByCode(rawCode) {
       joinedAt: serverTimestamp()
     });
 
-    // Increment member count in room
     transaction.update(roomRef, {
       memberCount: currentMemberCount + 1,
       updatedAt: serverTimestamp()
     });
 
-    // Record under user's profile
     const userRoomRef = doc(db, `users/${currentUser.uid}/rooms`, roomId);
     transaction.set(userRoomRef, {
       roomId: roomId,
@@ -222,7 +203,6 @@ export async function joinRoomByCode(rawCode) {
       lastOpenedAt: serverTimestamp()
     });
 
-    // Log join activity
     const activityRef = doc(collection(db, `rooms/${roomId}/activity`));
     transaction.set(activityRef, {
       type: "join",
@@ -237,7 +217,6 @@ export async function joinRoomByCode(rawCode) {
 }
 
 /**
- * Member leaves the room: cleans up their contributions and deletes membership
  * @param {string} roomId
  */
 export async function leaveRoom(roomId) {
@@ -245,7 +224,7 @@ export async function leaveRoom(roomId) {
   const currentUser = auth.currentUser;
   const displayName = await resolveDisplayName(currentUser);
 
-  // Check if owner
+  
   const roomSnap = await getDoc(doc(db, "rooms", roomId));
   if (!roomSnap.exists()) return;
 
@@ -253,7 +232,7 @@ export async function leaveRoom(roomId) {
     throw new Error("The room host cannot leave the room. You may close the room instead.");
   }
 
-  // Get all items in room to clean up my contributions
+  
   const itemsColl = collection(db, `rooms/${roomId}/items`);
   const itemsSnap = await getDocs(itemsColl);
 
@@ -296,7 +275,7 @@ export async function leaveRoom(roomId) {
       }
     }
 
-    // Decrement member count & update denormalized totals
+    
     const currentMemberCount = freshRoomSnap.data().memberCount || 1;
     const currentSubtotal = freshRoomSnap.data().subtotal || 0;
     const currentItemCount = freshRoomSnap.data().itemCount || 0;
@@ -308,13 +287,13 @@ export async function leaveRoom(roomId) {
       updatedAt: serverTimestamp()
     });
 
-    // Delete member document
+    
     transaction.delete(doc(db, `rooms/${roomId}/members`, currentUser.uid));
 
-    // Delete user room bookmark
+    
     transaction.delete(doc(db, `users/${currentUser.uid}/rooms`, roomId));
 
-    // Log leave activity
+    
     const activityRef = doc(collection(db, `rooms/${roomId}/activity`));
     transaction.set(activityRef, {
       type: "leave",
@@ -327,7 +306,6 @@ export async function leaveRoom(roomId) {
 }
 
 /**
- * Owner closes the room: sets status to 'closed'
  * @param {string} roomId
  * @param {string} code
  */
@@ -345,7 +323,6 @@ export async function closeRoom(roomId, code) {
 
   const displayName = await resolveDisplayName(currentUser);
 
-  // Log close activity BEFORE closing (the rules only allow logging while the room is open)
   try {
     await setDoc(doc(collection(db, `rooms/${roomId}/activity`)), {
       type: "close",
@@ -371,7 +348,7 @@ export async function closeRoom(roomId, code) {
 }
 
 /**
- * Copies the invite code to clipboard
+
  * @param {string} code
  */
 export async function copyInviteCode(code) {
@@ -384,7 +361,7 @@ export async function copyInviteCode(code) {
 }
 
 /**
- * Copies full invite join link to clipboard
+ 
  * @param {string} code
  */
 export async function copyInviteLink(code) {

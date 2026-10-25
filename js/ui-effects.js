@@ -1,16 +1,6 @@
-/**
- * @file ui-effects.js
- * @description Tactile, performant interaction effects: 3D tilt, magnetic buttons,
- * cursor follower, fly-to-basket, animated number counters, and scroll reveals.
- * Respects prefers-reduced-motion and touch device constraints.
- */
-
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-/**
- * Initializes custom luxury cursor ring on non-touch devices
- */
 export function initCustomCursor() {
   if (isTouchDevice || prefersReducedMotion) return;
 
@@ -47,18 +37,15 @@ export function initCustomCursor() {
     cursor.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
     requestAnimationFrame(renderCursor);
   }
+
   requestAnimationFrame(renderCursor);
 }
 
-/**
- * 3D Tilt effect on element hover
- * @param {string|HTMLElement} target 
- * @param {number} maxTilt 
- */
 export function initTilt(target = '.tilt-card', maxTilt = 8) {
   if (isTouchDevice || prefersReducedMotion) return;
 
   const elements = typeof target === 'string' ? document.querySelectorAll(target) : [target];
+
   elements.forEach((el) => {
     if (!el || el.dataset.tiltInitialized) return;
     el.dataset.tiltInitialized = 'true';
@@ -79,10 +66,6 @@ export function initTilt(target = '.tilt-card', maxTilt = 8) {
   });
 }
 
-/**
- * Magnetic button pull towards pointer
- * @param {string|HTMLElement} selector 
- */
 export function initMagneticButtons(selector = '.btn-magnetic') {
   if (isTouchDevice || prefersReducedMotion) return;
 
@@ -100,15 +83,9 @@ export function initMagneticButtons(selector = '.btn-magnetic') {
   });
 }
 
-/**
- * Smoothly animates a numerical DOM text content from current to target
- * @param {HTMLElement} element 
- * @param {number} endVal 
- * @param {string} prefix 
- * @param {number} duration 
- */
 export function animateCounter(element, endVal, prefix = '₹', duration = 600) {
   if (!element) return;
+
   if (prefersReducedMotion) {
     element.textContent = `${prefix}${endVal.toLocaleString('en-IN')}`;
     return;
@@ -120,7 +97,6 @@ export function animateCounter(element, endVal, prefix = '₹', duration = 600) 
   function updateCount(currentTime) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1);
-    // Ease out quart
     const ease = 1 - Math.pow(1 - progress, 4);
     const current = Math.round(startVal + (endVal - startVal) * ease);
 
@@ -136,12 +112,6 @@ export function animateCounter(element, endVal, prefix = '₹', duration = 600) 
   requestAnimationFrame(updateCount);
 }
 
-/**
- * Fly-to-basket particle arc animation
- * @param {HTMLElement} startEl 
- * @param {HTMLElement} targetEl 
- * @param {string} imgSrc 
- */
 export function flyToBasket(startEl, targetEl, imgSrc) {
   if (prefersReducedMotion || !startEl || !targetEl) return;
 
@@ -150,6 +120,7 @@ export function flyToBasket(startEl, targetEl, imgSrc) {
 
   const flyer = document.createElement('div');
   flyer.className = 'fly-to-basket-particle';
+
   if (imgSrc) {
     flyer.style.backgroundImage = `url(${imgSrc})`;
   } else {
@@ -163,7 +134,6 @@ export function flyToBasket(startEl, targetEl, imgSrc) {
   const deltaX = (targetRect.left + targetRect.width / 2) - (startRect.left + startRect.width / 2);
   const deltaY = (targetRect.top + targetRect.height / 2) - (startRect.top + startRect.height / 2);
 
-  // Trigger arc animation
   requestAnimationFrame(() => {
     flyer.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(0.2) rotate(25deg)`;
     flyer.style.opacity = '0.2';
@@ -172,15 +142,11 @@ export function flyToBasket(startEl, targetEl, imgSrc) {
   setTimeout(() => {
     flyer.remove();
     targetEl.classList.remove('cart-bump');
-    void targetEl.offsetWidth; // Reflow
+    void targetEl.offsetWidth;
     targetEl.classList.add('cart-bump');
   }, 550);
 }
 
-/**
- * Triggers a celebratory confetti burst made of pure lightweight CSS DOM elements
- * @param {HTMLElement} parentEl 
- */
 export function triggerConfettiBurst(parentEl = document.body) {
   if (prefersReducedMotion) return;
 
@@ -211,9 +177,6 @@ export function triggerConfettiBurst(parentEl = document.body) {
   setTimeout(() => container.remove(), 1200);
 }
 
-/**
- * Initializes scroll progress indicator at top of page
- */
 export function initScrollProgress() {
   const bar = document.createElement('div');
   bar.className = 'market-scroll-progress';
@@ -221,6 +184,7 @@ export function initScrollProgress() {
 
   window.addEventListener('scroll', () => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+
     if (totalHeight > 0) {
       const progress = (window.scrollY / totalHeight) * 100;
       bar.style.width = `${progress}%`;
@@ -228,10 +192,6 @@ export function initScrollProgress() {
   }, { passive: true });
 }
 
-/**
- * Parallax floating elements on mouse move
- * @param {string} selector 
- */
 export function initParallaxFloat(selector = '.parallax-float') {
   if (isTouchDevice || prefersReducedMotion) return;
 

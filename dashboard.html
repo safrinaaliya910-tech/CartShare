@@ -6,16 +6,13 @@
   <title>Market Desk — CartShare</title>
   <meta name="description" content="Manage your shared shopping rooms, track live basket totals, and open new rooms.">
 
-  <!-- Bootstrap 5.3 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <!-- Bootstrap Icons -->
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <!-- Custom Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
 
-  <!-- Lock Cards & Buttons to be 100% Static (No Tilt, No Magnetic Pull, No Hover Jump) -->
   <style>
     .paper-card,
     .paper-card:hover,
@@ -38,7 +35,6 @@
       transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
     }
 
-    /* Keep shadow steady on hover so cards do not feel like they are lifting/moving */
     .desk-action-grid .paper-card,
     .desk-action-grid .paper-card:hover,
     .room-ledger-card,
@@ -49,7 +45,6 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
   <header class="market-navbar">
     <div class="container d-flex align-items-center justify-content-between">
       <a href="index.html" class="brand-mark">
@@ -68,8 +63,7 @@
 
   <main class="py-4 py-md-5">
     <div class="container">
-      
-      <!-- Market Desk Greeting Header -->
+
       <div class="d-flex align-items-baseline justify-content-between flex-wrap gap-2 mb-4 pb-3 border-bottom border-2 border-dark border-opacity-10">
         <div>
           <span class="stamp-badge stamp-marigold mb-2">PROVISIONS DISPATCH</span>
@@ -80,10 +74,8 @@
         </div>
       </div>
 
-      <!-- Two Primary Actions Grid (Static Cards & Static Buttons) -->
       <div class="row g-4 mb-5 desk-action-grid">
-        
-        <!-- Action 1: Open a new room -->
+
         <div class="col-lg-6">
           <div class="paper-card p-4 p-md-5 h-100 d-flex flex-column justify-content-between shadow-tactile" style="border-top: 5px solid var(--burgundy);">
             <div>
@@ -104,7 +96,6 @@
           </div>
         </div>
 
-        <!-- Action 2: Join with a code (Segmented Boxes) -->
         <div class="col-lg-6">
           <div class="paper-card p-4 p-md-5 h-100 d-flex flex-column justify-content-between shadow-tactile" style="border-top: 5px solid var(--accent-marigold);">
             <div>
@@ -118,11 +109,9 @@
               </p>
             </div>
 
-            <!-- Inline Join Form with Segmented UX -->
             <form id="quickJoinForm">
               <div id="quickJoinError" class="alert alert-danger d-none font-mono small py-2 mb-2"></div>
-              
-              <!-- Segmented UI Box Row -->
+
               <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
                 <span class="font-mono fw-bold text-burgundy fs-4">CS -</span>
                 <input type="text" class="code-segment-box" id="codeSeg1" maxlength="1" autocomplete="off">
@@ -131,7 +120,6 @@
                 <input type="text" class="code-segment-box" id="codeSeg4" maxlength="1" autocomplete="off">
               </div>
 
-              <!-- Main hidden input kept synchronized for quickJoinForm JS -->
               <input type="hidden" id="quickJoinCodeInput" name="code">
 
               <button type="submit" class="btn btn-marigold w-100 font-mono fw-bold py-3 fs-5" id="quickJoinBtn">
@@ -143,7 +131,6 @@
 
       </div>
 
-      <!-- Your Active Rooms Ledger List -->
       <section>
         <div class="d-flex align-items-center justify-content-between mb-3">
           <div>
@@ -153,9 +140,8 @@
           <span class="font-mono text-concrete small">Real-time status updates</span>
         </div>
 
-        <!-- Rooms Container -->
         <div id="roomsListContainer">
-          <!-- Skeleton loader while Firestore connects -->
+
           <div class="paper-card p-4 mb-3 opacity-50">
             <div class="d-flex justify-content-between align-items-center">
               <div>
@@ -167,7 +153,6 @@
           </div>
         </div>
 
-        <!-- Beautiful Empty State -->
         <div id="roomsEmptyState" class="paper-card p-5 text-center d-none" style="border: 2px dashed var(--latte); background: var(--paper-white);">
           <div class="mx-auto mb-3 position-relative" style="width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, var(--cream-light), #F3ECDC); display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-marigold); box-shadow: 0 4px 15px rgba(242, 177, 52, 0.2);">
             <i class="bi bi-basket2-fill text-burgundy fs-1"></i>
@@ -186,7 +171,6 @@
     </div>
   </main>
 
-  <!-- Create Room Modal -->
   <div class="modal fade" id="createRoomModal" tabindex="-1" aria-labelledby="createRoomModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content paper-card border-0 shadow-dramatic">
@@ -197,19 +181,17 @@
           </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        
+
         <form id="createRoomForm">
           <div class="modal-body p-4">
             <div id="createRoomError" class="alert alert-danger d-none font-mono small py-2 mb-3"></div>
 
-            <!-- Room Name -->
             <div class="mb-3">
               <label for="roomNameInput" class="form-label-custom">Room Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control-custom" id="roomNameInput" placeholder="e.g. Hostel Block C Kitchen" minlength="3" maxlength="40" required autocomplete="off">
               <div class="form-text font-mono text-concrete" style="font-size:0.75rem;">Between 3 and 40 characters.</div>
             </div>
 
-            <!-- Delivery Threshold -->
             <div class="mb-3">
               <label for="deliveryThresholdInput" class="form-label-custom">Delivery Waiver Target (₹)</label>
               <div class="input-group">
@@ -233,22 +215,20 @@
     </div>
   </div>
 
-  <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-  <!-- Dashboard Module (Static — no tilt or magnetic effects) -->
   <script type="module">
     import { initDashboard } from './js/dashboard.js';
 
     initDashboard();
 
-    // Segmented Input UX: auto-advance and sync to hidden #quickJoinCodeInput
     const segs = [
       document.getElementById('codeSeg1'),
       document.getElementById('codeSeg2'),
       document.getElementById('codeSeg3'),
       document.getElementById('codeSeg4')
     ];
+
     const mainInput = document.getElementById('quickJoinCodeInput');
 
     function syncMainInput() {
@@ -259,9 +239,11 @@
     segs.forEach((seg, idx) => {
       seg.addEventListener('input', () => {
         seg.value = seg.value.toUpperCase();
+
         if (seg.value.length >= 1 && idx < segs.length - 1) {
           segs[idx + 1].focus();
         }
+
         syncMainInput();
       });
 
@@ -273,14 +255,19 @@
 
       seg.addEventListener('paste', (e) => {
         e.preventDefault();
+
         let pasted = (e.clipboardData || window.clipboardData).getData('text').trim().toUpperCase();
+
         if (pasted.startsWith('CS-')) pasted = pasted.replace('CS-', '');
+
         pasted = pasted.replace(/[^A-Z0-9]/g, '');
+
         for (let i = 0; i < 4; i++) {
           if (pasted[i] && segs[i]) {
             segs[i].value = pasted[i];
           }
         }
+
         segs[Math.min(3, pasted.length)].focus();
         syncMainInput();
       });

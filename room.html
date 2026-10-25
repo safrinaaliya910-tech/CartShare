@@ -6,22 +6,17 @@
   <title>Market Room — CartShare</title>
   <meta name="description" content="Collaborate on a real-time shared grocery basket with your room members.">
 
-  <!-- Google Fonts: Editorial Serif + Clean Geometric Sans + Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Bootstrap 5.3 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <!-- Custom Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/print.css" media="print">
 
-  <!-- Premium Grocery-Tech Dashboard Redesign Styles -->
   <style>
     :root {
       --cs-bg: #F6F3EC;
@@ -58,7 +53,6 @@
       padding-bottom: 96px;
     }
 
-    /* Disable any global tilt/transform jumps */
     .product-tile,
     .product-tile:hover,
     .btn,
@@ -70,9 +64,6 @@
       scale: none !important;
     }
 
-    /* ==========================================
-       1. TOP ROOM HEADER
-       ========================================== */
     .room-header-band {
       position: sticky;
       top: 0;
@@ -97,6 +88,7 @@
       transition: background 0.15s ease;
       flex-shrink: 0;
     }
+
     .brand-logo-box:hover {
       background: var(--cs-burgundy-hover);
       color: #fff;
@@ -112,7 +104,6 @@
       line-height: 1.2;
     }
 
-    /* Clean Status Pill (Replaces rotated stamps) */
     .status-pill,
     #headerRoomStatus.stamp-badge {
       display: inline-flex !important;
@@ -128,12 +119,14 @@
       border: 1px solid transparent !important;
       box-shadow: none !important;
     }
+
     #headerRoomStatus.stamp-sage,
     #headerRoomStatus.stamp-marigold {
       background: var(--cs-olive-soft) !important;
       color: var(--cs-olive) !important;
       border-color: rgba(46, 100, 73, 0.2) !important;
     }
+
     #headerRoomStatus.stamp-closed {
       background: #F3F1EE !important;
       color: var(--cs-muted) !important;
@@ -149,7 +142,6 @@
       margin-top: 2px;
     }
 
-    /* Sleek Room Code Bar */
     .room-code-bar {
       display: inline-flex;
       align-items: center;
@@ -159,6 +151,7 @@
       border-radius: 10px;
       padding: 5px 6px 5px 14px;
     }
+
     .room-code-label {
       font-size: 0.7rem;
       font-weight: 600;
@@ -166,6 +159,7 @@
       letter-spacing: 0.06em;
       color: var(--cs-muted);
     }
+
     .room-code-value {
       font-family: var(--font-mono);
       font-size: 0.95rem;
@@ -173,6 +167,7 @@
       color: var(--cs-burgundy);
       letter-spacing: 0.06em;
     }
+
     .code-action-btn {
       border: 1px solid var(--cs-border);
       background: var(--cs-surface);
@@ -187,23 +182,25 @@
       gap: 5px;
       transition: all 0.15s ease;
     }
+
     .code-action-btn:hover {
       border-color: var(--cs-burgundy);
       color: var(--cs-burgundy);
       background: var(--cs-burgundy-soft);
     }
+
     .code-action-btn.invite-accent {
       background: var(--cs-marigold-soft);
       border-color: rgba(229, 154, 40, 0.4);
       color: #8A5608;
     }
+
     .code-action-btn.invite-accent:hover {
       background: var(--cs-marigold);
       border-color: var(--cs-marigold);
       color: #fff;
     }
 
-    /* Header Action Buttons */
     .btn-header-primary {
       background: var(--cs-burgundy);
       color: #fff;
@@ -215,10 +212,12 @@
       padding: 7px 14px;
       transition: background 0.15s ease;
     }
+
     .btn-header-primary:hover {
       background: var(--cs-burgundy-hover);
       color: #fff;
     }
+
     .btn-header-secondary {
       background: transparent;
       color: var(--cs-muted);
@@ -230,15 +229,13 @@
       padding: 7px 12px;
       transition: all 0.15s ease;
     }
+
     .btn-header-secondary:hover {
       background: #fff;
       color: var(--cs-ink);
       border-color: var(--cs-ink);
     }
 
-    /* ==========================================
-       2. SEARCH & FILTER CONTROL BAR
-       ========================================== */
     .catalogue-toolbar {
       background: var(--cs-surface);
       border: 1px solid var(--cs-border);
@@ -250,6 +247,7 @@
     .search-field-wrap {
       position: relative;
     }
+
     .search-field-wrap i {
       position: absolute;
       left: 14px;
@@ -259,6 +257,7 @@
       font-size: 0.92rem;
       pointer-events: none;
     }
+
     .search-field-input {
       width: 100%;
       padding: 9px 14px 9px 38px;
@@ -270,9 +269,11 @@
       color: var(--cs-ink);
       transition: all 0.15s ease;
     }
+
     .search-field-input::placeholder {
       color: #9A9288;
     }
+
     .search-field-input:focus {
       outline: none;
       background: #fff;
@@ -294,15 +295,18 @@
       gap: 7px;
       transition: all 0.15s ease;
     }
+
     .toolbar-chip-btn:hover {
       border-color: var(--cs-border-strong);
       background: #fff;
     }
+
     .toolbar-chip-btn.active {
       background: var(--cs-olive);
       border-color: var(--cs-olive);
       color: #fff;
     }
+
     .toolbar-chip-count {
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -311,6 +315,7 @@
       background: rgba(27, 25, 23, 0.08);
       color: var(--cs-ink);
     }
+
     .toolbar-chip-btn.active .toolbar-chip-count {
       background: rgba(255, 255, 255, 0.22);
       color: #fff;
@@ -327,6 +332,7 @@
       padding: 8px 32px 8px 12px !important;
       cursor: pointer;
     }
+
     .toolbar-select:focus {
       border-color: var(--cs-burgundy) !important;
       box-shadow: 0 0 0 3px rgba(104, 24, 35, 0.08) !important;
@@ -339,6 +345,7 @@
       border-radius: 10px;
       padding: 2px;
     }
+
     .view-toggle-btn {
       border: none;
       background: transparent;
@@ -348,13 +355,13 @@
       font-size: 0.84rem;
       transition: all 0.15s ease;
     }
+
     .view-toggle-btn.active {
       background: var(--cs-surface);
       color: var(--cs-burgundy);
       box-shadow: var(--shadow-xs);
     }
 
-    /* Category Filter Pills */
     .category-scroller {
       display: flex;
       flex-wrap: wrap;
@@ -364,6 +371,7 @@
       padding-top: 14px;
       border-top: 1px solid var(--cs-border);
     }
+
     @media (max-width: 767.98px) {
       .category-scroller {
         flex-wrap: nowrap;
@@ -371,6 +379,7 @@
         padding-bottom: 4px;
         scrollbar-width: none;
       }
+
       .category-scroller::-webkit-scrollbar {
         display: none;
       }
@@ -394,18 +403,22 @@
       transform: none !important;
       box-shadow: none !important;
     }
+
     .category-chip::before,
     .category-chip::after {
       display: none !important;
     }
+
     .category-chip span {
       color: inherit !important;
     }
+
     .category-chip:hover {
       border-color: var(--cs-burgundy) !important;
       background: var(--cs-burgundy-soft) !important;
       color: var(--cs-burgundy) !important;
     }
+
     .category-chip.active,
     .category-chip.active:hover {
       background: var(--cs-burgundy) !important;
@@ -413,10 +426,12 @@
       color: #ffffff !important;
       font-weight: 600 !important;
     }
+
     .category-chip.active span,
     .category-chip.active:hover span {
       color: #ffffff !important;
     }
+
     .category-chip .chip-count {
       font-family: var(--font-mono) !important;
       font-size: 0.68rem !important;
@@ -425,19 +440,18 @@
       background: rgba(27, 25, 23, 0.06) !important;
       color: var(--cs-muted) !important;
     }
+
     .category-chip:hover .chip-count {
       background: rgba(104, 24, 35, 0.12) !important;
       color: var(--cs-burgundy) !important;
     }
+
     .category-chip.active .chip-count,
     .category-chip.active:hover .chip-count {
       background: rgba(255, 255, 255, 0.2) !important;
       color: #ffffff !important;
     }
 
-    /* ==========================================
-       3. CATALOGUE HEADER & PRODUCT CARDS
-       ========================================== */
     .section-header-bar {
       display: flex;
       align-items: baseline;
@@ -445,6 +459,7 @@
       margin-bottom: 14px;
       padding: 0 2px;
     }
+
     .section-title {
       font-family: var(--font-display);
       font-size: 1.45rem;
@@ -453,13 +468,13 @@
       letter-spacing: -0.02em;
       margin: 0;
     }
+
     .section-subtitle {
       font-size: 0.82rem;
       color: var(--cs-muted);
       font-weight: 500;
     }
 
-    /* Product Grid */
     .stalls-grid {
       display: grid !important;
       grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)) !important;
@@ -467,7 +482,6 @@
       align-items: stretch !important;
     }
 
-    /* Product Card */
     .product-tile,
     .product-tile.featured-tile {
       grid-column: span 1 !important;
@@ -483,17 +497,18 @@
       box-shadow: var(--shadow-xs) !important;
       transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
     }
+
     .product-tile:hover {
       border-color: var(--cs-border-strong) !important;
       box-shadow: var(--shadow-md) !important;
       transform: none !important;
     }
+
     .product-tile.in-room-basket {
       border-color: rgba(46, 100, 73, 0.45) !important;
       box-shadow: 0 0 0 1px rgba(46, 100, 73, 0.2), var(--shadow-sm) !important;
     }
 
-    /* Unobstructed Product Image */
     .tile-media {
       position: relative !important;
       width: 100% !important;
@@ -503,6 +518,7 @@
       overflow: hidden !important;
       border-bottom: 1px solid var(--cs-border) !important;
     }
+
     .tile-image {
       width: 100% !important;
       height: 100% !important;
@@ -511,11 +527,11 @@
       display: block !important;
       transition: transform 0.35s ease !important;
     }
+
     .product-tile:hover .tile-image {
       transform: scale(1.03) !important;
     }
 
-    /* Card Content Body */
     .tile-body {
       padding: 14px 16px 16px !important;
       display: flex !important;
@@ -523,6 +539,7 @@
       flex: 1 1 auto !important;
       justify-content: space-between !important;
     }
+
     .tile-meta-top {
       display: flex;
       align-items: center;
@@ -530,6 +547,7 @@
       gap: 6px;
       margin-bottom: 4px;
     }
+
     .tile-category-overline {
       font-size: 0.68rem;
       font-weight: 600;
@@ -537,6 +555,7 @@
       letter-spacing: 0.05em;
       color: var(--cs-muted);
     }
+
     .tile-origin-subtle {
       font-size: 0.68rem;
       font-weight: 500;
@@ -558,13 +577,13 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
     .tile-unit {
       font-size: 0.78rem !important;
       color: var(--cs-muted) !important;
       margin-bottom: 10px !important;
     }
 
-    /* Shared Basket Indicator inside Card */
     .tile-shared-indicator {
       display: inline-flex;
       align-items: center;
@@ -578,7 +597,6 @@
       margin-bottom: 10px;
     }
 
-    /* Card Footer: Price & Action */
     .tile-footer {
       margin-top: auto !important;
       padding-top: 12px !important;
@@ -588,6 +606,7 @@
       justify-content: space-between !important;
       gap: 8px !important;
     }
+
     .tile-price {
       font-family: var(--font-sans) !important;
       font-size: 1.08rem !important;
@@ -608,6 +627,7 @@
       box-shadow: none !important;
       transition: background 0.15s ease !important;
     }
+
     .add-to-cart-btn:hover {
       background: var(--cs-burgundy-hover) !important;
       border-color: var(--cs-burgundy-hover) !important;
@@ -622,6 +642,7 @@
       overflow: hidden !important;
       box-shadow: none !important;
     }
+
     .stepper-btn {
       width: 28px !important;
       height: 28px !important;
@@ -635,10 +656,12 @@
       justify-content: center !important;
       cursor: pointer;
     }
+
     .stepper-btn:hover:not(:disabled) {
       background: var(--cs-burgundy) !important;
       color: #fff !important;
     }
+
     .stepper-val {
       min-width: 26px !important;
       text-align: center !important;
@@ -648,17 +671,18 @@
       color: var(--cs-ink) !important;
     }
 
-    /* Compact List View Mode */
     .stalls-grid.compact-list-view {
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
       gap: 10px !important;
     }
+
     .stalls-grid.compact-list-view .product-tile {
       flex-direction: row !important;
       align-items: center !important;
       padding: 10px 14px !important;
       gap: 14px !important;
     }
+
     .stalls-grid.compact-list-view .tile-media {
       width: 72px !important;
       height: 72px !important;
@@ -667,17 +691,16 @@
       border: 1px solid var(--cs-border) !important;
       flex-shrink: 0 !important;
     }
+
     .stalls-grid.compact-list-view .tile-body {
       padding: 0 !important;
     }
+
     .stalls-grid.compact-list-view .tile-footer {
       border-top: none !important;
       padding-top: 4px !important;
     }
 
-    /* ==========================================
-       4. RIGHT-SIDE BASKET PANEL (STICKY CONSOLE)
-       ========================================== */
     @media (min-width: 1200px) {
       .room-right-rail .basket-slip {
         position: sticky !important;
@@ -701,6 +724,7 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .basket-panel-title {
       font-family: var(--font-display);
       font-size: 1.2rem;
@@ -708,6 +732,7 @@
       color: var(--cs-ink);
       margin: 0;
     }
+
     .basket-count-pill {
       background: var(--cs-burgundy-soft);
       color: var(--cs-burgundy);
@@ -718,7 +743,6 @@
       border-radius: 999px;
     }
 
-    /* Segmented Console Tabs */
     .basket-segmented-tabs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -727,6 +751,7 @@
       padding: 6px 16px;
       border-bottom: 1px solid var(--cs-border);
     }
+
     .slip-tab-btn {
       border: none;
       background: transparent;
@@ -740,16 +765,17 @@
       text-align: center;
       white-space: nowrap;
     }
+
     .slip-tab-btn:hover {
       color: var(--cs-ink);
     }
+
     .slip-tab-btn.active {
       background: var(--cs-surface);
       color: var(--cs-burgundy);
       box-shadow: var(--shadow-xs);
     }
 
-    /* Scrollable Panel Body */
     .slip-scrollable-body {
       flex: 1 1 auto;
       overflow-y: auto;
@@ -758,7 +784,6 @@
       scrollbar-color: var(--cs-border-strong) transparent;
     }
 
-    /* Clean Overrides for Injected Runway & Ledger Widgets */
     #deliveryRunwayContainer > div,
     #mobileRunwayContainer > div {
       background: var(--cs-surface-subtle) !important;
@@ -767,6 +792,7 @@
       padding: 12px 14px !important;
       box-shadow: none !important;
     }
+
     #deliveryRunwayContainer .stamp-badge,
     #fairShareLedgerContainer .stamp-badge {
       transform: none !important;
@@ -777,25 +803,28 @@
       box-shadow: none !important;
     }
 
-    /* Cart Item List */
     .cart-items-list {
       list-style: none;
       padding: 0;
       margin: 0;
     }
+
     .cart-item-row {
       padding: 12px 0;
       border-bottom: 1px solid var(--cs-border);
     }
+
     .cart-item-row:last-child {
       border-bottom: none;
     }
+
     .cart-item-main {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 12px;
     }
+
     .cart-item-thumb {
       width: 44px;
       height: 44px;
@@ -804,23 +833,27 @@
       border: 1px solid var(--cs-border);
       flex-shrink: 0;
     }
+
     .cart-item-name {
       font-weight: 600;
       font-size: 0.88rem;
       color: var(--cs-ink);
       line-height: 1.3;
     }
+
     .cart-contributor-breakdown {
       font-size: 0.74rem;
       color: var(--cs-muted);
       margin-top: 2px;
     }
+
     .cart-item-price {
       font-family: var(--font-sans);
       font-weight: 700;
       font-size: 0.92rem;
       color: var(--cs-ink);
     }
+
     .cart-my-actions {
       display: flex;
       align-items: center;
@@ -831,12 +864,12 @@
       border-radius: 8px;
     }
 
-    /* Basket Footer Dock */
     .slip-footer-dock {
       padding: 16px 20px;
       background: var(--cs-surface);
       border-top: 1px solid var(--cs-border);
     }
+
     .subtotal-label {
       font-size: 0.78rem;
       font-weight: 600;
@@ -844,6 +877,7 @@
       letter-spacing: 0.05em;
       color: var(--cs-muted);
     }
+
     .subtotal-amount {
       font-family: var(--font-sans);
       font-size: 1.5rem;
@@ -851,6 +885,7 @@
       color: var(--cs-ink);
       letter-spacing: -0.02em;
     }
+
     .btn-checkout-receipt {
       background: var(--cs-burgundy);
       color: #fff;
@@ -863,18 +898,17 @@
       width: 100%;
       transition: background 0.15s ease;
     }
+
     .btn-checkout-receipt:hover {
       background: var(--cs-burgundy-hover);
       color: #fff;
     }
 
-    /* ==========================================
-       5. MOBILE STICKY BAR (< 1200px)
-       ========================================== */
     @media (max-width: 1199.98px) {
       .room-right-rail {
         display: none !important;
       }
+
       .mobile-basket-bar {
         position: fixed;
         bottom: 14px;
@@ -887,12 +921,14 @@
         padding: 12px 16px;
         box-shadow: 0 12px 28px rgba(27, 25, 23, 0.28);
       }
+
       .mobile-basket-bar-inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
       }
     }
+
     @media (min-width: 1200px) {
       .mobile-basket-bar {
         display: none !important;
@@ -900,14 +936,13 @@
     }
   </style>
 </head>
+
 <body class="room-page-content">
 
-  <!-- Top Room Header -->
   <header class="room-header-band">
     <div class="container-fluid px-3 px-lg-4">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-        
-        <!-- Left: Brand & Room Info -->
+
         <div class="d-flex align-items-center gap-3">
           <a href="dashboard.html" class="brand-logo-box" title="Back to Market Desk">
             <img src="assets/images/logo.svg" alt="CartShare" width="22" height="22" onerror="this.outerHTML='<i class=\'bi bi-basket2-fill fs-6\'></i>'">
@@ -925,7 +960,6 @@
           </div>
         </div>
 
-        <!-- Center: Clean Room Invite Code Bar -->
         <div class="room-code-bar" id="inviteTicketBox">
           <div class="d-flex align-items-center gap-2">
             <span class="room-code-label">Room Code</span>
@@ -941,7 +975,6 @@
           </div>
         </div>
 
-        <!-- Right: Member Avatars & Room Actions -->
         <div class="d-flex align-items-center gap-2">
           <div class="member-avatars-stack me-1" id="headerMemberAvatars"></div>
 
@@ -958,18 +991,14 @@
     </div>
   </header>
 
-  <!-- Main Workspace -->
   <main class="container-fluid px-3 px-lg-4 py-4">
     <div class="row g-4 align-items-start">
-      
-      <!-- Left Column: Product Catalogue -->
+
       <section class="col-12 col-xl-8">
-        
-        <!-- Search, Filter & Category Bar -->
+
         <div class="catalogue-toolbar mb-4">
           <div class="row g-2 align-items-center">
-            
-            <!-- Search Input -->
+
             <div class="col-12 col-md-5">
               <div class="search-field-wrap">
                 <i class="bi bi-search"></i>
@@ -977,10 +1006,9 @@
               </div>
             </div>
 
-            <!-- Controls: In Basket Filter, Sort, View Mode -->
             <div class="col-12 col-md-7">
               <div class="d-flex align-items-center justify-content-md-end flex-wrap gap-2">
-                
+
                 <button type="button" class="toolbar-chip-btn" id="filterInBasketBtn" title="Filter items currently in the shared basket">
                   <i class="bi bi-basket2"></i>
                   <span>In Basket</span>
@@ -1008,11 +1036,9 @@
 
           </div>
 
-          <!-- Category Filter Chips -->
           <div class="category-scroller" id="categoryChipsContainer"></div>
         </div>
 
-        <!-- Section Title Bar -->
         <div class="section-header-bar">
           <div class="d-flex align-items-baseline gap-2 flex-wrap">
             <h2 class="section-title">The Market Stalls</h2>
@@ -1021,11 +1047,9 @@
           <span class="section-subtitle" id="stallsItemCountNotice">38 items</span>
         </div>
 
-        <!-- Product Grid -->
         <div class="stalls-grid" id="stallsProductGrid"></div>
 
-        <!-- Empty Search/Filter State -->
-        <div id="stallsEmptyState" class=" p-5 text-center mt-3 d-none" style="background: var(--cs-surface); border: 1px solid var(--cs-border); border-radius: var(--radius-lg);">
+        <div id="stallsEmptyState" class="p-5 text-center mt-3 d-none" style="background: var(--cs-surface); border: 1px solid var(--cs-border); border-radius: var(--radius-lg);">
           <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width: 56px; height: 56px; background: var(--cs-surface-subtle); color: var(--cs-muted);">
             <i class="bi bi-search fs-4"></i>
           </div>
@@ -1038,11 +1062,9 @@
 
       </section>
 
-      <!-- Right Column: Sticky Shared Basket Console -->
       <aside class="col-12 col-xl-4 room-right-rail">
         <div class="basket-slip">
-          
-          <!-- Panel Header -->
+
           <div class="basket-panel-header">
             <div>
               <h3 class="basket-panel-title">Shared Basket</h3>
@@ -1051,7 +1073,6 @@
             <span class="basket-count-pill" id="cartTotalItemsBadge">0 Items</span>
           </div>
 
-          <!-- Segmented Switcher -->
           <div class="basket-segmented-tabs" role="tablist">
             <button type="button" class="slip-tab-btn active" data-slip-tab="pane-cart">
               Basket
@@ -1064,10 +1085,8 @@
             </button>
           </div>
 
-          <!-- Scrollable Content -->
           <div class="slip-scrollable-body">
-            
-            <!-- Tab 1: Basket Items & Delivery Progress -->
+
             <div id="pane-cart" class="slip-tab-pane">
               <div id="deliveryRunwayContainer" class="mb-3"></div>
 
@@ -1075,7 +1094,6 @@
                 <ul class="cart-items-list" id="cartItemsList"></ul>
               </div>
 
-              <!-- Empty Basket State -->
               <div id="cartEmptyNotice" class="text-center py-4">
                 <div class="mx-auto mb-2 d-flex align-items-center justify-content-center rounded-circle" style="width: 48px; height: 48px; background: var(--cs-surface-subtle); color: var(--cs-muted);">
                   <i class="bi bi-basket2 fs-5"></i>
@@ -1084,19 +1102,16 @@
               </div>
             </div>
 
-            <!-- Tab 2: Fair Share Member Split -->
             <div id="pane-split" class="slip-tab-pane d-none">
               <div id="fairShareLedgerContainer"></div>
             </div>
 
-            <!-- Tab 3: Room Activity Feed -->
             <div id="pane-pulse" class="slip-tab-pane d-none">
               <div id="activityFeedContainer"></div>
             </div>
 
           </div>
 
-          <!-- Sticky Subtotal & Receipt Action Footer -->
           <div class="slip-footer-dock">
             <div class="d-flex justify-content-between align-items-baseline mb-3">
               <span class="subtotal-label">Basket Subtotal</span>
@@ -1113,7 +1128,6 @@
     </div>
   </main>
 
-  <!-- Mobile Bottom Sticky Bar (< 1200px) -->
   <div class="mobile-basket-bar">
     <div class="mobile-basket-bar-inner">
       <div>
@@ -1126,7 +1140,6 @@
     </div>
   </div>
 
-  <!-- Mobile Offcanvas Sheet -->
   <div class="offcanvas offcanvas-bottom" tabindex="-1" id="mobileBasketOffcanvas" aria-labelledby="mobileBasketOffcanvasLabel" style="height: 85vh; border-radius: 20px 20px 0 0; background: var(--cs-surface);">
     <div class="offcanvas-header border-bottom py-3">
       <div>
@@ -1134,7 +1147,7 @@
       </div>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    
+
     <div class="offcanvas-body p-0 d-flex flex-column">
       <ul class="nav nav-tabs px-3 pt-2 small fw-semibold" id="mobileBasketTabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -1178,7 +1191,6 @@
     </div>
   </div>
 
-  <!-- Shopping Summary Receipt Modal -->
   <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg); background: var(--cs-surface);">
@@ -1193,7 +1205,6 @@
     </div>
   </div>
 
-  <!-- Leave / Close Room Confirmation Modal -->
   <div class="modal fade" id="roomManageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg); background: var(--cs-surface);">
@@ -1212,10 +1223,8 @@
     </div>
   </div>
 
-  <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-  <!-- Room Controller Script (All Existing Business Logic & Sync Preserved) -->
   <script type="module">
     import { requireAuth } from './js/auth.js';
     import { getParam, formatCurrency, escapeHtml, showToast, getAvatarColor, getInitials, debounce } from './js/utils.js';
@@ -1240,9 +1249,6 @@
     let currentUser = null;
     let celebratedTarget = false;
 
-    /**
-     * Clean minimal SVG fallback if both primary and backup image fail
-     */
     function buildCleanFallbackSvg(item) {
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
         <rect width="400" height="300" fill="#F3EFE6"/>
@@ -1344,7 +1350,7 @@
 
       if (nameEl) nameEl.textContent = currentRoom.name || 'Market Room';
       if (codeEl) codeEl.textContent = currentRoom.code || 'CS-XXXX';
-      
+
       const isOwner = currentRoom.ownerUid === currentUser?.uid;
       const isClosed = currentRoom.status === 'closed';
 
@@ -1439,6 +1445,7 @@
         emptyState?.classList.remove('d-none');
         return;
       }
+
       emptyState?.classList.add('d-none');
 
       const isClosed = currentRoom?.status === 'closed';
@@ -1452,6 +1459,7 @@
         const inBasket = totalQty > 0;
 
         let actionControlHtml = '';
+
         if (isClosed) {
           actionControlHtml = `<span class="text-muted small fw-semibold">Closed</span>`;
         } else if (myQty > 0) {
@@ -1471,6 +1479,7 @@
         }
 
         let contributorsNote = '';
+
         if (myQty > 0 && othersQty > 0) {
           contributorsNote = `
             <div class="tile-shared-indicator">
@@ -1521,15 +1530,20 @@
         btn.addEventListener('click', async () => {
           const pId = btn.getAttribute('data-product-id');
           const product = PRODUCTS.find(p => p.id === pId);
+
           if (product && currentRoom) {
             btn.disabled = true;
-            const targetBadge = window.innerWidth >= 1200 
-              ? document.getElementById('cartTotalItemsBadge') 
+
+            const targetBadge = window.innerWidth >= 1200
+              ? document.getElementById('cartTotalItemsBadge')
               : document.querySelector('.mobile-basket-bar');
+
             const tileImg = btn.closest('.product-tile')?.querySelector('.tile-image');
+
             if (tileImg && targetBadge) {
               flyToBasket(tileImg, targetBadge, product.image);
             }
+
             await addItem(currentRoom.id, product);
             btn.disabled = false;
           }
@@ -1601,8 +1615,10 @@
         currentCategory = 'All Stalls';
         currentSort = 'featured';
         onlyInBasket = false;
+
         if (searchInput) searchInput.value = '';
         if (sortSelect) sortSelect.value = 'featured';
+
         inBasketBtn?.classList.remove('active');
         renderCategoryChips();
         renderCatalogue();
@@ -1651,6 +1667,7 @@
         emptyEl?.classList.remove('d-none');
         return;
       }
+
       emptyEl?.classList.add('d-none');
 
       const isClosed = currentRoom?.status === 'closed';
@@ -1668,9 +1685,11 @@
           const name = cUid === uid ? 'You' : (item.contributorNames?.[cUid] || 'Shopper');
           return `${name}: ${q}`;
         });
+
         const contribText = contribPairs.join(' · ');
 
         let myControlsHtml = '';
+
         if (!isClosed && myQty > 0) {
           myControlsHtml = `
             <div class="cart-my-actions">
@@ -1710,17 +1729,21 @@
       };
 
       const rowsHtml = currentItems.map(renderItemHtml).join('');
+
       if (listEl) listEl.innerHTML = rowsHtml;
       if (mobileListEl) mobileListEl.innerHTML = `<ul class="cart-items-list">${rowsHtml}</ul>`;
 
       const wireCartButtons = (container) => {
         if (!container) return;
+
         container.querySelectorAll('.cart-plus-btn').forEach(btn => {
           btn.addEventListener('click', () => changeMyQty(currentRoom.id, btn.getAttribute('data-product-id'), 1));
         });
+
         container.querySelectorAll('.cart-minus-btn').forEach(btn => {
           btn.addEventListener('click', () => changeMyQty(currentRoom.id, btn.getAttribute('data-product-id'), -1));
         });
+
         container.querySelectorAll('.cart-remove-mine-btn').forEach(btn => {
           btn.addEventListener('click', () => removeMine(currentRoom.id, btn.getAttribute('data-product-id')));
         });
@@ -1732,6 +1755,7 @@
 
     function renderActiveRunway() {
       if (!currentRoom) return;
+
       const subtotalPaise = currentItems.reduce((sum, item) => sum + ((item.totalQty || 0) * (item.unitPrice || 0)), 0);
       const thresholdPaise = currentRoom.threshold || 0;
 
@@ -1762,6 +1786,7 @@
       codeBtn?.addEventListener('click', () => {
         if (currentRoom?.code) {
           copyInviteCode(currentRoom.code);
+
           if (codeText) {
             codeText.textContent = 'Copied';
             setTimeout(() => codeText.textContent = 'Copy', 2000);
@@ -1772,6 +1797,7 @@
       linkBtn?.addEventListener('click', () => {
         if (currentRoom?.code) {
           copyInviteLink(currentRoom.code);
+
           if (linkText) {
             linkText.textContent = 'Copied';
             setTimeout(() => linkText.textContent = 'Invite', 2000);
@@ -1804,6 +1830,7 @@
 
       document.getElementById('roomManageActionBtn')?.addEventListener('click', () => {
         if (!currentRoom) return;
+
         const isOwner = currentRoom.ownerUid === currentUser?.uid;
 
         if (isOwner) {
@@ -1815,16 +1842,19 @@
           msgEl.textContent = 'Leaving will remove your contributions from the shared basket and remove the room from your Market Desk.';
           confirmBtn.textContent = 'Leave Room';
         }
+
         modal.show();
       });
 
       confirmBtn.addEventListener('click', async () => {
         if (!currentRoom) return;
+
         confirmBtn.disabled = true;
         confirmBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
 
         try {
           const isOwner = currentRoom.ownerUid === currentUser?.uid;
+
           if (isOwner) {
             await closeRoom(currentRoom.id, currentRoom.code);
             showToast('Room has been closed.', 'info');

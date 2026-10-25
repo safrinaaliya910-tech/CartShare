@@ -1,15 +1,5 @@
-/**
- * @file activity.js
- * @description Activity feed renderer for room interactions and real-time ledger events.
- */
-
 import { escapeHtml, relativeTime, getAvatarColor, getInitials } from './utils.js';
 
-/**
- * Formats an activity entry into human-readable action text
- * @param {Object} act 
- * @returns {string}
- */
 export function formatActivityText(act) {
   const actor = `<strong>${escapeHtml(act.actorName || 'Shopper')}</strong>`;
   const product = act.productName ? `<em>${escapeHtml(act.productName)}</em>` : '';
@@ -36,11 +26,6 @@ export function formatActivityText(act) {
   }
 }
 
-/**
- * Renders activity entries into container
- * @param {HTMLElement} containerEl 
- * @param {Array<any>} activities 
- */
 export function renderActivityFeed(containerEl, activities = []) {
   if (!containerEl) return;
 

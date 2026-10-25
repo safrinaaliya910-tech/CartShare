@@ -1,12 +1,5 @@
-/* ═════════════════════════════════════════════════════════════════════════
-   CARTSHARE — "THE LIVING MARKET"
-   Awwwards-level tactile, editorial boutique grocer experience
-   ═════════════════════════════════════════════════════════════════════════ */
-
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght,WONK@0,9..144,300..900,1;1,9..144,300..900,1&display=swap');
-
 :root {
-  /* Brand Palette */
   --cream: #E8DCC6;
   --cream-light: #F7F2E7;
   --cream-subtle: #EFE6D5;
@@ -23,13 +16,9 @@
   --concrete: #828588;
   --ink: #1B1214;
   --paper-white: #FAF7F0;
-
-  /* Typography */
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'DM Mono', 'Segoe UI', -apple-system, monospace;
-
-  /* Elevation & Motion */
   --shadow-tactile: 0 10px 30px rgba(37, 11, 14, 0.08);
   --shadow-dramatic: 0 25px 60px rgba(37, 11, 14, 0.22);
   --radius-sm: 4px;
@@ -40,7 +29,6 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Global Reset & Texture */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -62,14 +50,13 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  background-image: 
+  background-image:
     radial-gradient(rgba(114, 47, 55, 0.04) 1px, transparent 1px),
     radial-gradient(rgba(27, 18, 20, 0.04) 1px, transparent 1px);
   background-size: 28px 28px;
   background-position: 0 0, 14px 14px;
 }
 
-/* Scroll Progress Bar */
 .market-scroll-progress {
   position: fixed;
   top: 0;
@@ -81,9 +68,6 @@ body {
   transition: width 0.1s linear;
 }
 
-
-
-/* Headings & Typographic Hierarchy */
 h1, h2, h3, h4, h5, h6, .font-display {
   font-family: var(--font-display);
   color: var(--burgundy-dark);
@@ -97,7 +81,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   font-feature-settings: "tnum" 1;
 }
 
-/* Kinetic Outlined Text */
 .text-outline-burgundy {
   color: transparent;
   -webkit-text-stroke: 1.5px var(--burgundy);
@@ -110,7 +93,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   text-stroke: 1.5px var(--cream);
 }
 
-/* Vibrant Accent Colors */
 .text-marigold { color: var(--accent-marigold) !important; }
 .text-tomato { color: var(--accent-tomato) !important; }
 .text-burgundy { color: var(--burgundy) !important; }
@@ -119,8 +101,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
 .text-concrete { color: var(--concrete) !important; }
 .text-cream { color: var(--cream) !important; }
 .text-ink { color: var(--ink) !important; }
-
-/* Section Theming & Block Contrast */
 .section-midnight {
   background-color: var(--burgundy-midnight) !important;
   color: var(--cream-light) !important;
@@ -131,9 +111,9 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: #FFFFFF !important;
 }
 
-.section-midnight .paper-card h1, 
-.section-midnight .paper-card h2, 
-.section-midnight .paper-card h3, 
+.section-midnight .paper-card h1,
+.section-midnight .paper-card h2,
+.section-midnight .paper-card h3,
 .section-midnight .paper-card h4,
 .section-midnight .paper-card h5 {
   color: var(--burgundy-dark) !important;
@@ -158,7 +138,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   border-bottom: 1.5px solid var(--latte);
 }
 
-/* Navbar */
 .market-navbar {
   background-color: rgba(247, 242, 231, 0.95);
   backdrop-filter: blur(12px);
@@ -212,7 +191,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--burgundy);
 }
 
-/* Magnetic Buttons & CTAs */
 .btn-burgundy {
   background: linear-gradient(135deg, var(--burgundy), var(--burgundy-dark));
   color: #FFFFFF !important;
@@ -294,7 +272,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   font-size: 0.85rem;
 }
 
-/* Rubber Stamp Badges with Slam Animation */
 .stamp-badge {
   display: inline-flex;
   align-items: center;
@@ -346,7 +323,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   animation: stampSlam 0.5s var(--ease-elastic) forwards;
 }
 
-/* Rotating Circular Text Badge */
 .rotating-badge-wrap {
   position: relative;
   width: 130px;
@@ -383,14 +359,12 @@ h1, h2, h3, h4, h5, h6, .font-display {
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* Marquee Section (standalone band, visually separated from the demo) */
 .marquee-section {
   background-color: var(--burgundy-midnight);
   padding: 0;
   margin: 2.5rem 0;
 }
 
-/* Infinite Scrolling Marquee */
 .marquee-strip {
   overflow: hidden;
   white-space: nowrap;
@@ -444,7 +418,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   display: inline-block;
 }
 
-/* Cutout Frames with clip-path */
 .frame-arch {
   clip-path: inset(0 round 140px 140px 8px 8px);
 }
@@ -457,14 +430,12 @@ h1, h2, h3, h4, h5, h6, .font-display {
   border-radius: 60px;
 }
 
-/* 3D Tilt Card Container */
 .tilt-card {
   transform-style: preserve-3d;
   transition: transform 0.15s ease-out, box-shadow 0.25s ease;
   will-change: transform;
 }
 
-/* The Stalls: Magazine Style Product Grid */
 .stalls-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -585,7 +556,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--ink);
 }
 
-/* Stepper Controls */
 .stepper-control {
   display: inline-flex;
   align-items: center;
@@ -634,7 +604,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--burgundy-dark);
 }
 
-/* Fly-to-basket Particle Arc */
 .fly-to-basket-particle {
   position: fixed;
   width: 36px;
@@ -654,7 +623,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--burgundy-dark);
 }
 
-/* Confetti Burst */
 .confetti-burst-container {
   position: absolute;
   top: 50%;
@@ -679,13 +647,13 @@ h1, h2, h3, h4, h5, h6, .font-display {
     opacity: 1;
     transform: translate(0, 0) rotate(0deg);
   }
+
   100% {
     opacity: 0;
     transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
   }
-}
 
-/* The Basket Slip (Paper Ticket Right Rail) */
+}
 .basket-slip {
   background: var(--paper-white);
   border: 2px solid var(--latte);
@@ -767,7 +735,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   margin-top: 0.5rem;
 }
 
-/* Delivery Runway */
 .runway-card {
   background: linear-gradient(135deg, var(--cream-light), #F0E8D7);
   border: 1.5px solid var(--latte);
@@ -850,7 +817,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   margin-bottom: 0.4rem;
 }
 
-/* Fair Share Ledger */
 .ledger-table {
   width: 100%;
   border-collapse: collapse;
@@ -903,7 +869,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   transition: width 0.5s ease;
 }
 
-/* Activity Stream */
 .activity-stream {
   list-style: none;
   padding: 0;
@@ -932,7 +897,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   white-space: nowrap;
 }
 
-/* Segmented Code Input Boxes (Dashboard Quick Join) */
 .segmented-code-input {
   display: flex;
   gap: 0.5rem;
@@ -962,7 +926,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   background: #FFFFFF;
 }
 
-/* Room Ledger Cards (Dashboard) */
 .room-ledger-card {
   background: var(--paper-white);
   border: 1.5px solid var(--latte);
@@ -977,7 +940,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   border-color: var(--burgundy);
 }
 
-/* Cart bump pulse */
 @keyframes cartBump {
   0% { transform: scale(1); }
   35% { transform: scale(1.3); color: var(--accent-tomato); }
@@ -997,7 +959,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   animation: sageFlash 1.4s ease-out;
 }
 
-/* Ken Burns Photo Panel on Auth */
 .ken-burns-img {
   width: 100%;
   height: 100%;
@@ -1010,7 +971,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   100% { transform: scale(1.14) translate(-2%, -2%); }
 }
 
-/* Paper Surface Cards */
 .paper-card {
   background-color: var(--paper-white);
   color: var(--ink);
@@ -1026,7 +986,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   border-radius: var(--radius-sm);
 }
 
-/* Forms & Inputs */
 .form-label-custom {
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -1064,7 +1023,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   text-align: center;
 }
 
-/* Setup Warning Banner */
 .setup-warning-banner {
   background-color: #FFF3CD;
   border: 2px solid #E0A800;
@@ -1076,15 +1034,10 @@ h1, h2, h3, h4, h5, h6, .font-display {
   box-shadow: 0 4px 12px rgba(224, 168, 0, 0.15);
 }
 
-/* ═════════════════════════════════════════════════════════════════════════
-   LIVE DEMO SECTION (landing page) — clean, spacious, professional layout
-   ═════════════════════════════════════════════════════════════════════════ */
-
 .demo-section {
   padding: 5.5rem 0 6rem;
 }
 
-/* Header */
 .demo-header {
   display: flex;
   align-items: flex-end;
@@ -1105,7 +1058,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: rgba(247, 242, 231, 0.78);
 }
 
-/* Left panel heading row */
 .demo-panel-head {
   display: flex;
   align-items: center;
@@ -1114,7 +1066,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   margin-bottom: 1.5rem;
 }
 
-/* Demo stall cards */
 .demo-stall-card {
   display: flex;
   flex-direction: column;
@@ -1181,7 +1132,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   white-space: nowrap;
 }
 
-/* Basket card (right) */
 .demo-basket {
   padding: 1.75rem;
   background: var(--paper-white);
@@ -1217,7 +1167,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--ink);
 }
 
-/* Extra room beneath the track so tick labels never collide with text */
 .demo-runway-box .runway-track-wrap {
   margin: 1rem 0 2.1rem;
 }
@@ -1282,7 +1231,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   margin-bottom: 0;
 }
 
-/* "Who is adding?" member picker */
 .demo-member-picker {
   display: flex;
   align-items: center;
@@ -1340,7 +1288,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   border: 1.5px solid #FFFFFF;
 }
 
-/* Cart line contribution breakdown */
 .demo-cart-line-info {
   display: flex;
   flex-direction: column;
@@ -1352,7 +1299,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--concrete);
 }
 
-/* Ledger rows */
 .demo-ledger .avatar-circle {
   width: 28px;
   height: 28px;
@@ -1388,7 +1334,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--burgundy-dark);
 }
 
-/* Reduced Motion Override */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -1396,14 +1341,12 @@ h1, h2, h3, h4, h5, h6, .font-display {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
   .market-cursor-ring {
     display: none !important;
   }
-}
-/* ═════════════════════════════════════════════════════════════════════════
-   NAVBAR — integrated into the Market Ledger identity
-   ═════════════════════════════════════════════════════════════════════════ */
 
+}
 .market-navbar {
   background-color: rgba(247, 242, 231, 0.94);
   backdrop-filter: blur(14px);
@@ -1447,10 +1390,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   margin-top: 0.1rem;
 }
 
-/* ═════════════════════════════════════════════════════════════════════════
-   HERO — icon feature strip
-   ═════════════════════════════════════════════════════════════════════════ */
-
 .hero-feature-strip {
   display: flex;
   flex-wrap: wrap;
@@ -1486,10 +1425,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
   font-size: 0.95rem;
   flex-shrink: 0;
 }
-
-/* ═════════════════════════════════════════════════════════════════════════
-   HERO — floating cards (shared basket preview + room ticket)
-   ═════════════════════════════════════════════════════════════════════════ */
 
 .hero-float-card {
   background: var(--paper-white);
@@ -1696,6 +1631,7 @@ h1, h2, h3, h4, h5, h6, .font-display {
   color: var(--concrete);
   white-space: nowrap;
 }
+
 main {
   flex: 1 0 auto;
 }
