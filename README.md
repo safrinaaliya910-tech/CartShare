@@ -133,12 +133,35 @@ CartShare/
 
 ### Running locally
 
-Because the app uses native ES modules, it must be served over HTTP, not opened directly as a `file://` path.
 
+This is a static site (HTML/CSS/JS) that connects directly to Firebase — no build step needed. It only needs a local web server, since ES modules don't work when opened directly as a `file://` path.
+
+### 1. Start a local server
+
+Use any one of these:
+
+**VS Code Live Server** — right-click `index.html` → *Open with Live Server* or click -> *Go Live* 
+
+**Python**
 ```bash
-# Any static server works, for example:
 python -m http.server 8000
+```
 
+**Node**
+```bash
+npx serve .
+```
+
+### 2. Open it in your browser
+
+```
+http://localhost:8000
+```
+(or whatever address your server shows)
+
+### 3. Try it out
+
+Register an account, open a room, copy the invite link, then open it in an incognito window with a second account to see the shared basket sync live.
 
 ---
 
